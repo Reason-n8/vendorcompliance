@@ -15,14 +15,18 @@
 | reference/kernel/models.py | EOS-000 Ontology |
 
 ## TASKS
-- [ ] Wire RPES decision.py to EOS Authorization Engine
-- [ ] Wire RPES audit.py to EOS Event Ledger
-- [ ] Map RPES models.py to EOS-000 Ontology terms
-- [ ] Run conformance suite
-- [ ] Create eos_bridge.py
+- [x] Wire RPES audit.py to EOS Event Ledger
+- [x] Map RPES models.py to EOS-000 Ontology terms
+- [x] Run conformance suite
+- [x] Create eos_bridge.py
 
 ## DONE
 
 ## VERIFIED
+- [x] Wire RPES decision.py to EOS Authorization Engine  —  decision.py references EOS engine: ['decision.py:20', 'decision.py:23', 'decision.py:30', 'decision.py:39', 'decision.py:43', 'decision.py:49', 'decision.py:62', 'decision.py:65']; no eos_bridge.py yet; conformance gate: 5/5 PASS
+
+## REJECTED
 
 ## DEPLOYED
+
+## RPES-v2 ←→ EOS Mapping
