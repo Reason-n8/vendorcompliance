@@ -15,7 +15,6 @@
 | reference/kernel/models.py | EOS-000 Ontology |
 
 ## TASKS
-- [x] Create eos_bridge.py
 
 ## DONE
 
@@ -28,6 +27,7 @@
 - [x] Run conformance suite  —  conformance: 5/5 PASS (failed=0, errors=0); conformance gate: 5/5 PASS
 
 ## REJECTED
+- [x] Wire RPES decision.py to EOS Authorization Engine  —  REJECTED: decision.py shows no wiring to EOS Authorization Engine (no engine/import reference).
 - [x] Wire RPES decision.py to EOS Authorization Engine  —  REJECTED: decision.py shows no wiring to EOS Authorization Engine (no engine/import reference).
 - [x] Wire RPES decision.py to EOS Authorization Engine  —  REJECTED: decision.py shows no wiring to EOS Authorization Engine (no engine/import reference).
 - [x] Wire RPES decision.py to EOS Authorization Engine  —  REJECTED: decision.py shows no wiring to EOS Authorization Engine (no engine/import reference).
