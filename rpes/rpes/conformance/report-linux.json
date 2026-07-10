@@ -1,0 +1,44 @@
+{
+  "report_id": "CR-5T-5P-0F-0E",
+  "generated_at": "2026-06-27T17:12:24.219341+00:00",
+  "implementation": "Reference Kernel v0.6 (Python)",
+  "specification_target": "SPEC-M1-001",
+  "results": [
+    {
+      "test_id": "TV-001",
+      "description": "Boundary Check: value within limit produces WITHIN_LIMIT",
+      "status": "PASS",
+      "details": "Fields match: ['outcome_code', 'confidence', 'connector_used', 'baseline_reference']"
+    },
+    {
+      "test_id": "TV-002",
+      "description": "Boundary Check: value outside limit produces OUTSIDE_LIMIT",
+      "status": "PASS",
+      "details": "Fields match: ['outcome_code', 'confidence', 'connector_used', 'baseline_reference']"
+    },
+    {
+      "test_id": "TV-003",
+      "description": "Decision Engine: HIGH + OUTSIDE_LIMIT produces ACP_WARRANTED",
+      "status": "PASS",
+      "details": "Fields match: ['decision_code', 'referenced_conclusions']"
+    },
+    {
+      "test_id": "TV-004",
+      "description": "Decision Engine: WITHIN_LIMIT produces ACP_NOT_WARRANTED",
+      "status": "PASS",
+      "details": "Fields match: ['decision_code', 'referenced_conclusions']"
+    },
+    {
+      "test_id": "TV-005",
+      "description": "M1-A1: DecisionRecord includes referenced_conclusions traceability",
+      "status": "PASS",
+      "details": "Fields match: ['referenced_conclusions']"
+    }
+  ],
+  "summary": {
+    "total": 5,
+    "passed": 5,
+    "failed": 0,
+    "errors": 0
+  }
+}

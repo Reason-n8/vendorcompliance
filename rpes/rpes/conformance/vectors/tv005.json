@@ -1,0 +1,18 @@
+{
+  "test_id": "TV-005",
+  "description": "M1-A1: DecisionRecord includes referenced_conclusions traceability",
+  "input": {
+    "conclusion_id": "C-001",
+    "outcome_code": "OUTSIDE_LIMIT",
+    "confidence": "HIGH",
+    "connector_used": "Boundary Check",
+    "baseline_reference": "RVS-001-MB",
+    "referenced_knowledge": ["K-002"]
+  },
+  "expected_output": {
+    "decision_id": "D-001",
+    "decision_code": "ACP_WARRANTED",
+    "referenced_conclusions": ["C-001"]
+  },
+  "comparison_fields": ["referenced_conclusions"]
+}

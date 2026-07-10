@@ -1,0 +1,21 @@
+{
+  "test_id": "TV-002",
+  "description": "Boundary Check: value outside limit produces OUTSIDE_LIMIT",
+  "input": {
+    "knowledge_id": "K-002",
+    "component": "MorningBriefContract",
+    "metric_type": "Latency",
+    "observation": "Morning Brief p95 latency",
+    "value": 251.0,
+    "unit": "ms",
+    "observed_at": "2026-06-27T00:00:00Z"
+  },
+  "expected_output": {
+    "conclusion_id": "C-001",
+    "outcome_code": "OUTSIDE_LIMIT",
+    "confidence": "HIGH",
+    "connector_used": "Boundary Check",
+    "baseline_reference": "RVS-001-MB"
+  },
+  "comparison_fields": ["outcome_code", "confidence", "connector_used", "baseline_reference"]
+}

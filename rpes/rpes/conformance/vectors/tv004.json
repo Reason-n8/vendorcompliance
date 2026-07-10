@@ -1,0 +1,18 @@
+{
+  "test_id": "TV-004",
+  "description": "Decision Engine: WITHIN_LIMIT produces ACP_NOT_WARRANTED",
+  "input": {
+    "conclusion_id": "C-001",
+    "outcome_code": "WITHIN_LIMIT",
+    "confidence": "HIGH",
+    "connector_used": "Boundary Check",
+    "baseline_reference": "RVS-001-MB",
+    "referenced_knowledge": ["K-001"]
+  },
+  "expected_output": {
+    "decision_id": "D-001",
+    "decision_code": "ACP_NOT_WARRANTED",
+    "referenced_conclusions": ["C-001"]
+  },
+  "comparison_fields": ["decision_code", "referenced_conclusions"]
+}
