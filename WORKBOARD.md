@@ -22,6 +22,7 @@
 
 ## VERIFIED
 - [x] Wire RPES audit.py to EOS Event Ledger  —  audit.py references ledger: ['audit.py:1', 'audit.py:4', 'audit.py:5', 'audit.py:6', 'audit.py:18', 'audit.py:21', 'audit.py:23', 'audit.py:29', 'audit.py:30', 'audit.py:33', 'audit.py:38', 'audit.py:40', 'audit.py:50', 'audit.py:52', 'audit.py:57', 'audit.py:59', 'audit.py:75', 'audit.py:83']; conformance gate: 5/5 PASS
+- [x] Wire RPES audit.py to EOS Event Ledger  —  audit.py references ledger: ['audit.py:1', 'audit.py:4', 'audit.py:5', 'audit.py:6', 'audit.py:18', 'audit.py:21', 'audit.py:23', 'audit.py:29', 'audit.py:30', 'audit.py:33', 'audit.py:38', 'audit.py:40', 'audit.py:50', 'audit.py:52', 'audit.py:57', 'audit.py:59', 'audit.py:75', 'audit.py:83']; conformance gate: 5/5 PASS
 
 ## REJECTED
 - [x] Wire RPES decision.py to EOS Authorization Engine  —  REJECTED: decision.py shows no wiring to EOS Authorization Engine (no engine/import reference).
