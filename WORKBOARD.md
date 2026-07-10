@@ -7,8 +7,14 @@
 - CRITICAL: Never touch D:\Reason. Work only in D:\RPES-v2.
 - CRITICAL: All file writes through governed_write at D:\EOS\wrappers\governed_write.py
 
+## RPES-v2 ←→ EOS Mapping
+| RPES Kernel | EOS Component |
+|-------------|---------------|
+| reference/kernel/decision.py | Authorization Engine |
+| reference/kernel/audit.py | Event Ledger |
+| reference/kernel/models.py | EOS-000 Ontology |
+
 ## TASKS
-- [x] Wire RPES audit.py to EOS Event Ledger
 - [x] Map RPES models.py to EOS-000 Ontology terms
 - [x] Run conformance suite
 - [x] Create eos_bridge.py
@@ -18,6 +24,7 @@
 ## VERIFIED
 
 ## REJECTED
+- [x] Wire RPES decision.py to EOS Authorization Engine  —  REJECTED: decision.py shows no wiring to EOS Authorization Engine (no engine/import reference).
 
 ## DEPLOYED
 - [x] Wire RPES decision.py to EOS Authorization Engine  —  decision.py references EOS engine: ['decision.py:20', 'decision.py:23', 'decision.py:30', 'decision.py:39', 'decision.py:43', 'decision.py:49', 'decision.py:62', 'decision.py:65']; no eos_bridge.py yet; conformance gate: 5/5 PASS -> DEPLOYED.
