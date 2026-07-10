@@ -13,6 +13,7 @@
 
 ## VERIFIED
 - [x] Clone https://github.com/rankfixer-ai/rankfixer-core to D:\RPES-v2\projects  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS
+- [x] Diagnose why https://rankfixer.co is down  — SEE RK-DIAGNOSIS below. Live site serves a 4-byte corrupt index.html (body "  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS
 
 ## REJECTED
 
