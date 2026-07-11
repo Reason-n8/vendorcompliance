@@ -12,9 +12,6 @@
 ## DONE
 
 ## VERIFIED
-- [x] Make 3-agent system persistent: Builder, Reviewer, Deployer all running 24/7 as tracked background processes  —  REVIEWER AUDIT: VERIFIED. Evidence: eos_review_watcher.py --interval 20 running (PIDs 10156/8476); eos_deployer.py --interval 900 running (PIDs 5812/13680); Builder = Hermes agent loop. All three roles operational as persistent/tracked processes.
-- [x] Fix Dabdabi LLM reasoning — switch fast model or add API key so it can actually solve tasks  —  REVIEWER AUDIT: VERIFIED. Evidence: Ollama reachable (HTTP 200 /api/tags); pulled models include simple-reasoner:latest (reasoning) + qwen2.5-coder:3b (fast); dabdabi-agent/llm.py talks to local Ollama OpenAI-compatible endpoint with graceful OllamaUnavailable fallback. Reasoning path functional.
-- [x] Fix tasks.db corruption issue and harden institutional memory database  —  REVIEWER AUDIT: VERIFIED. Evidence: sqlite3 PRAGMA integrity_check = ok; tables institutional_memory/task_reasoning/ledger_events present and populated. DB operational, no corruption.
 
 ## REJECTED
 - [x] Add /api/coder/run endpoint to dashboard server with allowlist (health_check, dns_check, seo_audit only)  —  REVIEWER AUDIT: REJECTED. Evidence: POST http://localhost:8765/api/coder/run -> HTTP 404 (not implemented). Served root page D:\EOS\index.html calls /api/coder/run but the dashboard server has no such route. Allowlist never created. Return to Builder.
@@ -47,6 +44,9 @@
 - [x] Start Reviewer watcher as persistent background process  —  DONE: persistent background process confirmed running (active poll cycles + Reviewed:/DEPLOYED commits)  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS -> DEPLOYED.
 - [x] Start Deployer monitor as persistent background process  —  DONE: persistent background process confirmed running (active poll cycles + Reviewed:/DEPLOYED commits)  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS -> DEPLOYED.
 - [x] Make Architecture Laws a sticky sidebar visible across all tabs  —  DONE: D:/EOS/dashboard/index.html restructured: .container flex row, main-content + sticky .laws-sidebar aside; Laws moved out of Dashboard tab. Verified in browser on Dashboard AND Projects tabs (sidebar persists across tabs); responsive stacks on mobile. governed_write decision=33be5633  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS -> DEPLOYED.
+- [x] Make 3-agent system persistent: Builder, Reviewer, Deployer all running 24/7 as tracked background processes  —  REVIEWER AUDIT: VERIFIED. Evidence: eos_review_watcher.py --interval 20 running (PIDs 10156/8476); eos_deployer.py --interval 900 running (PIDs 5812/13680); Builder = Hermes agent loop. All three roles operational as persistent/tracked processes. -> DEPLOYED.
+- [x] Fix Dabdabi LLM reasoning — switch fast model or add API key so it can actually solve tasks  —  REVIEWER AUDIT: VERIFIED. Evidence: Ollama reachable (HTTP 200 /api/tags); pulled models include simple-reasoner:latest (reasoning) + qwen2.5-coder:3b (fast); dabdabi-agent/llm.py talks to local Ollama OpenAI-compatible endpoint with graceful OllamaUnavailable fallback. Reasoning path functional. -> DEPLOYED.
+- [x] Fix tasks.db corruption issue and harden institutional memory database  —  REVIEWER AUDIT: VERIFIED. Evidence: sqlite3 PRAGMA integrity_check = ok; tables institutional_memory/task_reasoning/ledger_events present and populated. DB operational, no corruption. -> DEPLOYED.
 
 ## RPES-v2 <-> EOS Mapping
 
