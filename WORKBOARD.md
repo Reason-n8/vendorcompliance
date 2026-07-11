@@ -12,6 +12,7 @@
 ## DONE
 
 ## VERIFIED
+- [x] Build Legal/Compliance Agent — checks licenses, privacy policies, terms compliance  —  DONE: built under dabdabi-agent/agents/ (subclass of BaseAgent); governed report emitted to reports/<agent>/; verified run via run_all.py (0 failures)  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS
 
 ## REJECTED
 - [x] Unblock Pruweba: get source repo access or create new repo from audit findings  —  REVIEWER AUDIT: REJECTED. Evidence: no pruweba repo under D:\RPES-v2\projects/ (only portfolio, rankfixer). WORKBOARD line 78 still BLOCKED on source-repo access (Vercel project must be linked to git; user action). Not done. Return to Builder.
