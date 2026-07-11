@@ -16,6 +16,7 @@
 
 ## VERIFIED
 - [x] Add /api/coder/run endpoint to dashboard server with allowlist (health_check, dns_check, seo_audit only)  —  DONE: /api/coder/run POST endpoint added to D:/EOS/dashboard/server.py with strict allowlist (health_check/dns_check/seo_audit). Verified: forbidden->403; health_check->authorized+executed via Coder gate. governed_write dec a7d69b80.  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS
+- [x] Fix site monitoring display — use fetch() instead of Image() so sites show LIVE correctly  —  DONE: checkSite() rewritten from new Image() to fetch() with AbortController. Sites report real LIVE/DOWN. governed_write dec 3eade151.  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS
 
 ## REJECTED
 - [x] Unblock Pruweba: get source repo access or create new repo from audit findings  —  REVIEWER AUDIT: REJECTED. Evidence: no pruweba repo under D:\RPES-v2\projects/ (only portfolio, rankfixer). WORKBOARD line 78 still BLOCKED on source-repo access (Vercel project must be linked to git; user action). Not done. Return to Builder.
