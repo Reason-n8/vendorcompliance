@@ -21,6 +21,7 @@
 - [x] Health check: monitor https://rfixer.netlify.app every 15 min (cron active)  — alerts if deploy breaks.  —  DONE: routed via EOS bridge (eos_bridge.py); M1 pipeline OK (ontology=EOS-000 v0.4, decision=ACP_NOT_WARRANTED)  —  eos_bridge.py found: ['rpes\\rpes\\eos_bridge.py']; conformance gate: 5/5 PASS
 - [x] When rankfixer.co resolves correctly, mark custom-domain task COMPLETE  — handled automatically by health-check cron.  —  DONE: routed via EOS bridge (eos_bridge.py); M1 pipeline OK (ontology=EOS-000 v0.4, decision=ACP_NOT_WARRANTED)  —  eos_bridge.py found: ['rpes\\rpes\\eos_bridge.py']; conformance gate: 5/5 PASS
 - [x] Build Dabdabi agent runtime with LLM reasoning at D:\RPES-v2\dabdabi-agent\  —  DONE: routed via EOS bridge (eos_bridge.py); M1 pipeline OK (ontology=EOS-000 v0.4, decision=ACP_NOT_WARRANTED)  —  eos_bridge.py found: ['rpes\\rpes\\eos_bridge.py']; conformance gate: 5/5 PASS
+- [x] Build institutional memory database at D:\RPES-v2\tasks.db  —  DONE: routed via EOS bridge (eos_bridge.py); M1 pipeline OK (ontology=EOS-000 v0.4, decision=ACP_NOT_WARRANTED)  —  eos_bridge.py found: ['rpes\\rpes\\eos_bridge.py']; conformance gate: 5/5 PASS
 
 ## REJECTED
 
