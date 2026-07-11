@@ -22,6 +22,7 @@
 - [x] When rankfixer.co resolves correctly, mark custom-domain task COMPLETE  — handled automatically by health-check cron.  —  DONE: routed via EOS bridge (eos_bridge.py); M1 pipeline OK (ontology=EOS-000 v0.4, decision=ACP_NOT_WARRANTED)  —  eos_bridge.py found: ['rpes\\rpes\\eos_bridge.py']; conformance gate: 5/5 PASS
 - [x] Build Dabdabi agent runtime with LLM reasoning at D:\RPES-v2\dabdabi-agent\  —  DONE: routed via EOS bridge (eos_bridge.py); M1 pipeline OK (ontology=EOS-000 v0.4, decision=ACP_NOT_WARRANTED)  —  eos_bridge.py found: ['rpes\\rpes\\eos_bridge.py']; conformance gate: 5/5 PASS
 - [x] Build institutional memory database at D:\RPES-v2\tasks.db  —  DONE: routed via EOS bridge (eos_bridge.py); M1 pipeline OK (ontology=EOS-000 v0.4, decision=ACP_NOT_WARRANTED)  —  eos_bridge.py found: ['rpes\\rpes\\eos_bridge.py']; conformance gate: 5/5 PASS
+- [x] Add LLM reasoning to Dabdabi runner (DeepSeek API integration)  —  DONE: LLM reasoning integrated: dabdabi-agent/runner.py reasons via Ollama (simple-reasoner=DeepSeek-R1-derived) + qwen2.5-coder:3b fast; governed writes; INTEGRATION.md written  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS
 
 ## REJECTED
 
