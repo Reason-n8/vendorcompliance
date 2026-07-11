@@ -8,28 +8,15 @@
 - CRITICAL: All file writes through governed_write at D:\EOS\wrappers\governed_write.py
 
 ## TASKS
-- [x] RESEARCH: Scrape 50+ job listings from Indeed.com (same keywords). Save to research/indeed-jobs.json  —  ASSIGNED: REVIEWER, SEO, DEPLOYER  —  STUCK: RESEARCH
-- [x] RESEARCH: Scrape 30+ job listings from OnlineJobs.ph. Save to research/onlinejobs-jobs.json  —  ASSIGNED: RESEARCH, PERFORMANCE  —  STUCK: RESEARCH
-- [x] RESEARCH: Categorize ALL listings into groups (e.g., "AI Agent Dev", "Python Automation", "GEO/SEO Audit", "ChatGPT Integration", "Web Scraping", "Data Pipeline", "API Development"). Count per category. Save to research/categories.json  —  ASSIGNED: RESEARCH, PERFORMANCE  —  STUCK: RESEARCH
-- [x] RESEARCH: For each category, calculate: average budget, budget range, number of listings, estimated competition (how many freelancers offer this). Save to research/category-analysis.json  —  ASSIGNED: RESEARCH, PERFORMANCE  —  STUCK: RESEARCH
-- [x] ALL: Read research/opportunities.md. Pick the #1 opportunity by consensus. Comment on the workboard with your vote and reasoning.?  —  ASSIGNED: PERFORMANCE, SECURITY
-- [x] RESEARCH: For the winning opportunity, deep-dive: find 5 specific client pain points from job descriptions. What exact words do they use? What are they desperate for? Save to research/client-pain-points.md  —  ASSIGNED: RESEARCH, SEO  —  STUCK: RESEARCH
-- [x] RESEARCH: Find 3-5 existing competitors for this niche. What do they charge? What features do they offer? What are their weaknesses? Save to research/competitor-analysis.md  —  ASSIGNED: RESEARCH, SEO  —  STUCK: RESEARCH
-- [x] BUILDER: Based on the winning opportunity + client pain points, build the core product. Must be: a working script/tool/site that solves the top 3 client pain points. Save to projects/audit-service/  —  ASSIGNED: BUILDER, PERFORMANCE  —  STUCK: BUILDER
-- [x] BUILDER: Create a simple landing page with: what it does, who it's for, pricing (based on market research), a demo/sample output, a buy button (Stripe/PayPal/Gumroad). Save to projects/product/landing/  —  ASSIGNED: BUILDER, PERFORMANCE  —  STUCK: BUILDER
-- [x] MARKETING: Write landing page copy that speaks directly to the client pain points found in research. Use their exact language from job posts. Save to projects/product/marketing/copy.md  —  ASSIGNED: MARKETING, SEO  —  STUCK: MARKETING
-- [x] MARKETING: Write 5 outreach messages for different client types (SaaS founder, marketing manager, agency owner). Each references a specific pain point. Save to projects/product/marketing/outreach.md  —  ASSIGNED: MARKETING, SEO  —  STUCK: MARKETING
-- [x] MARKETING: Create 5 X posts and 5 LinkedIn posts announcing the service. Focus on the problem it solves, not the features. Save to projects/product/marketing/social.md  —  ASSIGNED: MARKETING, SEO  —  STUCK: MARKETING
-- [x] SEO: Optimize landing page: title (include primary keyword), meta description (include pain point), H1, OG tags, Twitter card, JSON-LD schema, canonical URL. Save to projects/product/seo/  —  ASSIGNED: SEO, BUILDER, LEGAL  —  STUCK: SEO
-- [x] SEO: Provide keyword list with search volume estimates for the niche. Save to projects/product/seo/keywords.md  —  ASSIGNED: SEO, BUILDER  —  STUCK: SEO
-- [x] PERFORMANCE: Test landing page: Lighthouse scores, TTFB, mobile rendering, Core Web Vitals. Save report to projects/product/performance/  —  ASSIGNED: PERFORMANCE, SEO  —  STUCK: PERFORMANCE
-- [x] DEVOPS: Deploy landing page to Netlify/Vercel. Provide live URL. Set up health monitoring every 15 minutes. Save config to projects/product/devops/  —  ASSIGNED: DEVOPS, PERFORMANCE  —  STUCK: DEVOPS
-- [x] BUILDER: Write a README.md for the product with: what it does, how to run it, pricing, how to buy, evidence from research showing demand. Save to projects/product/README.md  —  ASSIGNED: BUILDER, SEO  —  STUCK: BUILDER
+- [x] FIX-LEGAL_COMPLIANCE: license — portfolio: no LICENSE file found.?  —  ASSIGNED: PERFORMANCE, BUILDER, DEPLOYER
+- [x] FIX-LEGAL_COMPLIANCE: license — rankfixer: no LICENSE file found.?  —  ASSIGNED: PERFORMANCE, DEVOPS, REVIEWER
+- [x] FIX-SEO: seo-title — rankfixer\blog\json-ld-injection.html: missing <title>.?  —  ASSIGNED: PERFORMANCE, LEGAL
+- [x] FIX-SEO: seo-h1 — rankfixer\blog\json-ld-injection.html: found 0 <h1> (exactly 1 expected).?  —  ASSIGNED: PERFORMANCE, MARKETING
+- [x] FIX-SEO: seo-links — rankfixer\docs\ai-visibility-checker\index.html: 7 broken relative link(s): /ai-visibility-checker, /research, /blog.?  —  ASSIGNED: PERFORMANCE, RESEARCH
 
 ## DONE
 
 ## VERIFIED
-- [x] Identify the TOP 3 opportunities: highest demand + lowest competition + best pay. For each, explain: what clients need, why they need it now, what they pay, how many others offer it. Save to research/opportunities.md  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS
 
 ## REJECTED
 - [x] Unblock Pruweba: get source repo access or create new repo from audit findings  —  REVIEWER AUDIT: REJECTED. Evidence: no pruweba repo under D:\RPES-v2\projects/ (only portfolio, rankfixer). WORKBOARD line 78 still BLOCKED on source-repo access (Vercel project must be linked to git; user action). Not done. Return to Builder.
@@ -77,3 +64,4 @@
 - [x] Build Performance Monitor agent — checks site speed, Core Web Vitals weekly via Lighthouse  —  DONE: built under dabdabi-agent/agents/ (subclass of BaseAgent); governed report emitted to reports/<agent>/; verified run via run_all.py (0 failures)  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS -> DEPLOYED.
 - [x] Build Security Auditor agent — scans code for vulnerabilities before Reviewer audit (Bandit, ESLint, OWASP)  —  DONE: built under dabdabi-agent/agents/ (subclass of BaseAgent); governed report emitted to reports/<agent>/; verified run via run_all.py (0 failures)  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS -> DEPLOYED.
 - [x] Build Dabdabi Intelligence Layer (6 modules: decomposer, chain_of_thought, memory_router, cache, validator, context_window)  —  DONE: Built Dabdabi Intelligence Layer at D:/RPES-v2/dabdabi-agent/intelligence/ — 6 modules (decomposer, chain_of_thought, memory_router, cache, validator, context_window) + pipeline.py + smoke_test.py. Augments local Ollama model (qwen2.5-coder:3b/llama3.1:8b) WITHOUT changing models: decomposition + per-step CoT + memory retrieval + response cache + structured-output validation + token-budgeted context. Verified end-to-end (LLM decomposed 4 steps, CoT ran per step). Agent.wired to intelligence_think with safe fallback. Also hardened executor path-guard so the Builder cannot overwrite its own engine (intelligence/ dir + core modules protected). governed dec 0284b0a1 (decomposer), f7ab1e99 (cot), 3dd6f4da (pipeline).  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS -> DEPLOYED.
+- [x] Identify the TOP 3 opportunities: highest demand + lowest competition + best pay. For each, explain: what clients need, why they need it now, what they pay, how many others offer it. Save to research/opportunities.md  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS -> DEPLOYED.
