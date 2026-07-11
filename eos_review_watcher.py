@@ -205,6 +205,15 @@ def render_section(name: str, items: list[str]) -> list[str]:
 
 def process_once() -> bool:
     """One watch pass. Returns True if a commit was made."""
+    # --- telemetry heartbeat (institution self-monitoring) ---
+    try:
+        sys.path.insert(0, r"D:\RPES-v2\dabdabi-agent\agents")
+        import institution_telemetry as tele
+        tele.beat("reviewer", status="polling", detail="scanning DONE lane")
+    except Exception as _e:  # never silently swallow a heartbeat failure
+        import traceback
+        traceback.print_exc()
+        log(f"{RED}heartbeat beat() failed: {_e}{RESET}")
     if not WORKBOARD.exists():
         log(f"{RED}WORKBOARD.md missing at {WORKBOARD}{RESET}")
         return False
@@ -230,49 +239,26 @@ def process_once() -> bool:
             rejected.append(f"{item}  —  {notes}")
             log(f"  {RED}REJECTED{RESET}: {notes}")
 
-        # Rebuild the board
-        tasks = parse_items(sections.get("TASKS", []))
-        other = {k: v for k, v in sections.items()
-                 if k not in ("TASKS", "DONE", "VERIFIED", "REJECTED", "DEPLOYED", "RULES")}
-        new_lines = list(sections.get("RULES", []))  # keep RULES block if present
-        out: list[str] = []
-        out.append("# RPES-v2 Institution Workboard")
-        out.append("")
-        # RULES
-        if "RULES" in sections:
-            out.append("## RULES")
-            out.extend([l for l in sections["RULES"] if l.strip()])
-            out.append("")
-        # Mapping (preserve if present)
-        if "RPES-v2 ←→ EOS Mapping" in sections:
-            out.append("## RPES-v2 ←→ EOS Mapping")
-            out.extend([l for l in sections["RPES-v2 ←→ EOS Mapping"] if l.strip()])
-            out.append("")
-        out.extend(render_section("TASKS", tasks))
-        out.extend(render_section("DONE", []))  # done is now drained
-        out.extend(render_section("VERIFIED", verified))
-        out.extend(render_section("REJECTED", rejected))
-        out.extend(render_section("DEPLOYED", parse_items(sections.get("DEPLOYED", []))))
-        # any leftover unknown sections
-        for k, v in other.items():
-            out.extend(render_section(k, parse_items(v)))
-        WORKBOARD.write_text("\n".join(out).rstrip() + "\n", encoding="utf-8")
-
-        # Commit Reviewed:
-        summary = item.split("—")[0].strip()
-        msg = f"Reviewed: {summary}"
+        # Propose the verdict to tasks.db instead of writing the board directly.
+        # The Orchestrator is the SOLE committer: it applies the proposal
+        # (DONE -> VERIFIED/REJECTED) atomically and regenerates the read-only
+        # WORKBOARD.md export. This removes the Reviewer as a concurrent board
+        # writer (the root of the multi-writer corruption).
         try:
-            subprocess.run(["git", "-C", str(RPES), "add", "WORKBOARD.md"], check=True,
-                           capture_output=True, text=True)
-            res = subprocess.run(["git", "-C", str(RPES), "commit", "-q", "-m", msg],
-                                capture_output=True, text=True)
-            if res.returncode == 0:
-                log(f"  {GREEN}committed{RESET} '{msg}'")
-                committed = True
-            else:
-                log(f"  {DIM}commit no-op (nothing changed): {res.stderr.strip()[:80]}{RESET}")
+            from pathlib import Path as _P
+            _ad = _P(__file__).resolve().parent
+            # task_store lives in dabdabi-agent/agents/ (one level under repo).
+            _agents = _P(r"D:\RPES-v2\dabdabi-agent\agents")
+            if str(_agents) not in sys.path:
+                sys.path.insert(0, str(_agents))
+            import task_store as ts
+            ts.propose("reviewer", "reviewer_verdict",
+                       {"item": item, "verdict": verdict, "notes": notes},
+                       intent=f"review: {verdict} {item[:100]}")
+            committed = True
+            log(f"  {GREEN}proposed{RESET} {verdict} for '{item[:60]}'")
         except Exception as e:  # noqa
-            log(f"  {RED}commit failed: {e}{RESET}")
+            log(f"  {RED}propose failed: {e}{RESET}")
 
     return committed
 
