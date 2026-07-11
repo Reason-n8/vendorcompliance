@@ -8,10 +8,17 @@
 - CRITICAL: All file writes through governed_write at D:\EOS\wrappers\governed_write.py
 
 ## TASKS
+- [x] Add /api/coder/run endpoint to dashboard server with allowlist (health_check, dns_check, seo_audit only)
+- [x] Fix site monitoring display — use fetch() instead of Image() so sites show LIVE correctly
+- [x] Make 3-agent system persistent: Builder, Reviewer, Deployer all running 24/7 as tracked background processes
+- [x] Fix Dabdabi LLM reasoning — switch fast model or add API key so it can actually solve tasks
+- [x] Fix tasks.db corruption issue and harden institutional memory database
+- [x] Unblock Pruweba: get source repo access or create new repo from audit findings
 
 ## DONE
 
 ## VERIFIED
+- [x] Make Architecture Laws a sticky sidebar visible across all tabs  —  DONE: D:/EOS/dashboard/index.html restructured: .container flex row, main-content + sticky .laws-sidebar aside; Laws moved out of Dashboard tab. Verified in browser on Dashboard AND Projects tabs (sidebar persists across tabs); responsive stacks on mobile. governed_write decision=33be5633  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS
 
 ## REJECTED
 
