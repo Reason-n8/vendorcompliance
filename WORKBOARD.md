@@ -8,18 +8,18 @@
 - CRITICAL: All file writes through governed_write at D:\EOS\wrappers\governed_write.py
 
 ## TASKS
-- [x] Add /api/coder/run endpoint to dashboard server with allowlist (health_check, dns_check, seo_audit only)
-- [x] Fix site monitoring display — use fetch() instead of Image() so sites show LIVE correctly
-- [x] Make 3-agent system persistent: Builder, Reviewer, Deployer all running 24/7 as tracked background processes
-- [x] Fix Dabdabi LLM reasoning — switch fast model or add API key so it can actually solve tasks
-- [x] Fix tasks.db corruption issue and harden institutional memory database
-- [x] Unblock Pruweba: get source repo access or create new repo from audit findings
 
 ## DONE
 
 ## VERIFIED
+- [x] Make 3-agent system persistent: Builder, Reviewer, Deployer all running 24/7 as tracked background processes  —  REVIEWER AUDIT: VERIFIED. Evidence: eos_review_watcher.py --interval 20 running (PIDs 10156/8476); eos_deployer.py --interval 900 running (PIDs 5812/13680); Builder = Hermes agent loop. All three roles operational as persistent/tracked processes.
+- [x] Fix Dabdabi LLM reasoning — switch fast model or add API key so it can actually solve tasks  —  REVIEWER AUDIT: VERIFIED. Evidence: Ollama reachable (HTTP 200 /api/tags); pulled models include simple-reasoner:latest (reasoning) + qwen2.5-coder:3b (fast); dabdabi-agent/llm.py talks to local Ollama OpenAI-compatible endpoint with graceful OllamaUnavailable fallback. Reasoning path functional.
+- [x] Fix tasks.db corruption issue and harden institutional memory database  —  REVIEWER AUDIT: VERIFIED. Evidence: sqlite3 PRAGMA integrity_check = ok; tables institutional_memory/task_reasoning/ledger_events present and populated. DB operational, no corruption.
 
 ## REJECTED
+- [x] Add /api/coder/run endpoint to dashboard server with allowlist (health_check, dns_check, seo_audit only)  —  REVIEWER AUDIT: REJECTED. Evidence: POST http://localhost:8765/api/coder/run -> HTTP 404 (not implemented). Served root page D:\EOS\index.html calls /api/coder/run but the dashboard server has no such route. Allowlist never created. Return to Builder.
+- [x] Fix site monitoring display — use fetch() instead of Image() so sites show LIVE correctly  —  REVIEWER AUDIT: REJECTED. Evidence: served root page D:\EOS\index.html line 337 still `var img = new Image();` inside checkSite(); display path remains Image()-based. Fix not applied to served page. Return to Builder.
+- [x] Unblock Pruweba: get source repo access or create new repo from audit findings  —  REVIEWER AUDIT: REJECTED. Evidence: no pruweba repo under D:\RPES-v2\projects/ (only portfolio, rankfixer). WORKBOARD line 78 still BLOCKED on source-repo access (Vercel project must be linked to git; user action). Not done. Return to Builder.
 
 ## DEPLOYED
 - [x] Wire RPES decision.py to EOS Authorization Engine  —  decision.py references EOS engine: ['decision.py:3']; conformance gate: 5/5 PASS -> DEPLOYED.
