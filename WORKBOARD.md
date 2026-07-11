@@ -16,6 +16,7 @@
 ## VERIFIED
 - [x] TEST3: clean threaded smoke test  —  DONE: routed via EOS bridge (eos_bridge.py); M1 pipeline OK (ontology=EOS-000 v0.4, decision=ACP_NOT_WARRANTED)  —  eos_bridge.py found: ['rpes\\rpes\\eos_bridge.py']; conformance gate: 5/5 PASS
 - [x] Deployer monitor: rankfixer.co is down  — health-check FAIL 2026-07-11 04:08:54: HTTP 200 (rc=0) len=4. Builder to diagnose/fix; Reviewer audits; Deployer redeploys.  —  DONE: routed via EOS bridge (eos_bridge.py); M1 pipeline OK (ontology=EOS-000 v0.4, decision=ACP_NOT_WARRANTED)  —  eos_bridge.py found: ['rpes\\rpes\\eos_bridge.py']; conformance gate: 5/5 PASS
+- [x] Deployer monitor: rankfixer.co not resolving to Netlify (DNS/TLS propagation or domain not registered)  — health-check FAIL 2026-07-11 03:45:09: rfixer.netlify.app OK (HTTP 200); rankfixer.co HTTP 000 (rc=60). Builder to diagnose/fix; Reviewer audits; Deployer redeploys.  —  DONE: routed via EOS bridge (eos_bridge.py); M1 pipeline OK (ontology=EOS-000 v0.4, decision=ACP_NOT_WARRANTED)  —  eos_bridge.py found: ['rpes\\rpes\\eos_bridge.py']; conformance gate: 5/5 PASS
 
 ## REJECTED
 
