@@ -8,8 +8,8 @@
 - CRITICAL: All file writes through governed_write at D:\EOS\wrappers\governed_write.py
 
 ## TASKS
-- [x] Reviewer: Audit coder store/health_check.py (Deployer monitor), verify it monitors both domains correctly via the Coder gate
-- [x] Deployer: Wire health monitor into the deploy loop via Coder Execution Gate (coder.run("health_check")); if health check fails, auto-create a TASK  — DONE: eos_deployer.py cycle calls coder.run("health_check"); rankfixer_health.py is now a thin gate-launcher; eos-builder cron paused to avoid duplicate runs.
+- [x] Start Reviewer watcher as persistent background process
+- [x] Start Deployer monitor as persistent background process
 
 ## DONE
 
@@ -20,6 +20,7 @@
 - [x] Health check: monitor https://rankfixer.co every 15 min (cron active)  — auto-marks domain COMPLETE on resolve.  —  DONE: routed via EOS bridge (eos_bridge.py); M1 pipeline OK (ontology=EOS-000 v0.4, decision=ACP_NOT_WARRANTED)  —  eos_bridge.py found: ['rpes\\rpes\\eos_bridge.py']; conformance gate: 5/5 PASS
 - [x] Health check: monitor https://rfixer.netlify.app every 15 min (cron active)  — alerts if deploy breaks.  —  DONE: routed via EOS bridge (eos_bridge.py); M1 pipeline OK (ontology=EOS-000 v0.4, decision=ACP_NOT_WARRANTED)  —  eos_bridge.py found: ['rpes\\rpes\\eos_bridge.py']; conformance gate: 5/5 PASS
 - [x] When rankfixer.co resolves correctly, mark custom-domain task COMPLETE  — handled automatically by health-check cron.  —  DONE: routed via EOS bridge (eos_bridge.py); M1 pipeline OK (ontology=EOS-000 v0.4, decision=ACP_NOT_WARRANTED)  —  eos_bridge.py found: ['rpes\\rpes\\eos_bridge.py']; conformance gate: 5/5 PASS
+- [x] Build Dabdabi agent runtime with LLM reasoning at D:\RPES-v2\dabdabi-agent\  —  DONE: routed via EOS bridge (eos_bridge.py); M1 pipeline OK (ontology=EOS-000 v0.4, decision=ACP_NOT_WARRANTED)  —  eos_bridge.py found: ['rpes\\rpes\\eos_bridge.py']; conformance gate: 5/5 PASS
 
 ## REJECTED
 
