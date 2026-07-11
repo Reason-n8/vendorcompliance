@@ -18,7 +18,6 @@
 ## DONE
 
 ## VERIFIED
-- [x] Make Architecture Laws a sticky sidebar visible across all tabs  —  DONE: D:/EOS/dashboard/index.html restructured: .container flex row, main-content + sticky .laws-sidebar aside; Laws moved out of Dashboard tab. Verified in browser on Dashboard AND Projects tabs (sidebar persists across tabs); responsive stacks on mobile. governed_write decision=33be5633  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS
 
 ## REJECTED
 
@@ -47,6 +46,7 @@
 - [x] Add LLM reasoning to Dabdabi runner (DeepSeek API integration)  —  DONE: LLM reasoning integrated: dabdabi-agent/runner.py reasons via Ollama (simple-reasoner=DeepSeek-R1-derived) + qwen2.5-coder:3b fast; governed writes; INTEGRATION.md written  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS -> DEPLOYED.
 - [x] Start Reviewer watcher as persistent background process  —  DONE: persistent background process confirmed running (active poll cycles + Reviewed:/DEPLOYED commits)  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS -> DEPLOYED.
 - [x] Start Deployer monitor as persistent background process  —  DONE: persistent background process confirmed running (active poll cycles + Reviewed:/DEPLOYED commits)  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS -> DEPLOYED.
+- [x] Make Architecture Laws a sticky sidebar visible across all tabs  —  DONE: D:/EOS/dashboard/index.html restructured: .container flex row, main-content + sticky .laws-sidebar aside; Laws moved out of Dashboard tab. Verified in browser on Dashboard AND Projects tabs (sidebar persists across tabs); responsive stacks on mobile. governed_write decision=33be5633  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS -> DEPLOYED.
 
 ## RPES-v2 <-> EOS Mapping
 
