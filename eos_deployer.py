@@ -29,6 +29,7 @@ import argparse
 import re
 import subprocess
 import sys
+import threading
 import time
 from datetime import datetime, timezone
 from pathlib import Path
@@ -68,6 +69,12 @@ GOV_EVIDENCE = ["workboard-update-protocol"]
 # unrelated commits that merely mention those words.
 TRIGGER_RE   = re.compile(r"^(Reviewed:|Fix:)")
 POLL_SECONDS = 15 * 60  # 15 minutes
+# Liveness heartbeat cadence. The Deployer's WORK cycle is POLL_SECONDS (900s)
+# but the telemetry monitor flags an agent "stale" after MISSING_AFTER=180s.
+# To keep liveness honest (and avoid the monitor auto-restarting a healthy
+# agent into a duplicate), the heartbeat runs in its own fast daemon thread,
+# decoupled from the slow work cycle.
+HB_INTERVAL = 60  # seconds between liveness beats (well under 180s)
 
 DIM = "\033[2m"; GREEN = "\033[92m"; RED = "\033[91m"; YELLOW = "\033[93m"; RESET = "\033[0m"
 
@@ -287,18 +294,33 @@ def _deploy_verified(verified_text_items, origin: str) -> bool:
         return False
 
 
-def cycle() -> None:
-    # --- telemetry heartbeat (institution self-monitoring) ---
+def _heartbeat(detail: str = "health check + Reviewed: scan") -> None:
+    """Stamp Deployer liveness. Safe to call from any thread; never raises."""
     try:
         from pathlib import Path as _P
         sys.path.insert(0, r"D:\RPES-v2\dabdabi-agent\agents")
         import institution_telemetry as tele
-        tele.beat("deployer", status="polling",
-                  detail="health check + Reviewed: scan")
+        tele.beat("deployer", status="polling", detail=detail)
     except Exception as _e:  # never silently swallow a heartbeat failure
         import traceback
         traceback.print_exc()
         log(f"{RED}heartbeat beat() failed: {_e}{RESET}")
+
+
+def _heartbeat_loop() -> None:
+    """Daemon thread: beat every HB_INTERVAL so liveness is independent of
+    the slow 900s work cycle (the monitor flags 'stale' after 180s)."""
+    while True:
+        try:
+            _heartbeat()
+        except Exception:  # pragma: no cover - defensive
+            pass
+        time.sleep(HB_INTERVAL)
+
+
+def cycle() -> None:
+    # --- telemetry heartbeat (also covered by the daemon thread) ---
+    _heartbeat(detail="work cycle + Reviewed: scan")
     # Deployer monitor: health check every cycle (15 min) via Coder gate.
     try:
         run_health_check()
@@ -363,6 +385,11 @@ def main() -> None:
             log(f"{RED}cycle error: {e}{RESET}")
             add_failure_task(f"cycle exception: {e}")
         return
+    # Long-lived mode: start the liveness heartbeat thread (decoupled from the
+    # 900s work cycle) so the monitor never sees a false "stale" and tries to
+    # auto-restart a healthy agent into a duplicate process.
+    _hb = threading.Thread(target=_heartbeat_loop, name="deployer-hb", daemon=True)
+    _hb.start()
     while True:
         try:
             cycle()
