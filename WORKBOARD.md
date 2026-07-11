@@ -12,6 +12,7 @@
 ## DONE
 
 ## VERIFIED
+- [x] Build Dabdabi Intelligence Layer (6 modules: decomposer, chain_of_thought, memory_router, cache, validator, context_window)  —  DONE: Built Dabdabi Intelligence Layer at D:/RPES-v2/dabdabi-agent/intelligence/ — 6 modules (decomposer, chain_of_thought, memory_router, cache, validator, context_window) + pipeline.py + smoke_test.py. Augments local Ollama model (qwen2.5-coder:3b/llama3.1:8b) WITHOUT changing models: decomposition + per-step CoT + memory retrieval + response cache + structured-output validation + token-budgeted context. Verified end-to-end (LLM decomposed 4 steps, CoT ran per step). Agent.wired to intelligence_think with safe fallback. Also hardened executor path-guard so the Builder cannot overwrite its own engine (intelligence/ dir + core modules protected). governed dec 0284b0a1 (decomposer), f7ab1e99 (cot), 3dd6f4da (pipeline).  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS
 
 ## REJECTED
 - [x] Unblock Pruweba: get source repo access or create new repo from audit findings  —  REVIEWER AUDIT: REJECTED. Evidence: no pruweba repo under D:\RPES-v2\projects/ (only portfolio, rankfixer). WORKBOARD line 78 still BLOCKED on source-repo access (Vercel project must be linked to git; user action). Not done. Return to Builder.
