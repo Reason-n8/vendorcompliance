@@ -8,21 +8,21 @@
 - CRITICAL: All file writes through governed_write at D:\EOS\wrappers\governed_write.py
 
 ## TASKS
-- [x] FIX-LEGAL_COMPLIANCE: license — portfolio: no LICENSE file found.?  —  ASSIGNED: PERFORMANCE, BUILDER, DEPLOYER
-- [x] FIX-LEGAL_COMPLIANCE: license — rankfixer: no LICENSE file found.?  —  ASSIGNED: PERFORMANCE, DEVOPS, REVIEWER
-- [x] FIX-SEO: seo-title — rankfixer\blog\json-ld-injection.html: missing <title>.?  —  ASSIGNED: PERFORMANCE, LEGAL
-- [x] FIX-SEO: seo-h1 — rankfixer\blog\json-ld-injection.html: found 0 <h1> (exactly 1 expected).?  —  ASSIGNED: PERFORMANCE, MARKETING
-- [x] FIX-SEO: seo-links — rankfixer\docs\ai-visibility-checker\index.html: 7 broken relative link(s): /ai-visibility-checker, /research, /blog.?  —  ASSIGNED: PERFORMANCE, RESEARCH
+- [x] FIX-SEO: seo-title — rankfixer\blog\json-ld-injection.html: missing <title>.  —  ASSIGNED: PERFORMANCE, SEO, DEPLOYER  —  STUCK: PERFORMANCE, SEO
+- [x] FIX-SEO: seo-h1 — rankfixer\blog\json-ld-injection.html: found 0 <h1> (exactly 1 expected).  —  ASSIGNED: PERFORMANCE, SEO, MARKETING  —  STUCK: PERFORMANCE, SEO
+- [x] FIX-SEO: seo-links — rankfixer\docs\ai-visibility-checker\index.html: 7 broken relative link(s): /ai-visibility-checker, /research, /blog.  —  ASSIGNED: DEVOPS, LEGAL, BUILDER  —  STUCK: DEVOPS, LEGAL
 
 ## DONE
 
 ## VERIFIED
+- [x] license — rankfixer: no LICENSE file found.  —  generic audit: no specific wiring pattern matched; relying on conformance green + manual review.; conformance gate: 5/5 PASS
 
 ## REJECTED
 - [x] Unblock Pruweba: get source repo access or create new repo from audit findings  —  REVIEWER AUDIT: REJECTED. Evidence: no pruweba repo under D:\RPES-v2\projects/ (only portfolio, rankfixer). WORKBOARD line 78 still BLOCKED on source-repo access (Vercel project must be linked to git; user action). Not done. Return to Builder.
 - [x] Wire Dabdabi to use Nous Portal API (hy3:free) — add nous provider to models.json using same auth as Hermes  —  REJECTED: no Nous/OpenAI API key present in environment (Ollama-only local stack). Infeasible without credentials; same class of blocker as Pruweba. Leave until key provided.
 
 ## DEPLOYED
+- [x] license — portfolio: no LICENSE file found.
 - [x] Scrape 50+ job listings from Upwork.com/search (AI, automation, Python, SEO, GEO keywords). Extract: job title, description, budget, client industry, date posted. Save to research/upwork-jobs.json
 - [x] Wire RPES decision.py to EOS Authorization Engine  —  decision.py references EOS engine: ['decision.py:3']; conformance gate: 5/5 PASS -> DEPLOYED.
 - [x] Wire RPES audit.py to EOS Event Ledger  —  audit.py references ledger: ['audit.py:1', 'audit.py:4', 'audit.py:5', 'audit.py:6', 'audit.py:18', 'audit.py:21', 'audit.py:23', 'audit.py:29', 'audit.py:30', 'audit.py:33', 'audit.py:38', 'audit.py:40', 'audit.py:50', 'audit.py:52', 'audit.py:57', 'audit.py:59', 'audit.py:75', 'audit.py:83']; conformance gate: 5/5 PASS -> DEPLOYED.
