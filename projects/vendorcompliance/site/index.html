@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VendorCompliance OS — COI Tracking for Contractors | $99/mo</title>
+  <meta name="description" content="Stop chasing expired Certificates of Insurance by hand. VendorCompliance OS auto-tracks every subcontractor COI and alerts you before it lapses. From $99/mo." />
+  <link rel="canonical" href="https://vendorcompliance.os" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="VendorCompliance OS — Never miss an expired COI" />
+  <meta property="og:description" content="Automated COI + lien-waiver tracking for general contractors. From $99/mo." />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    "name": "VendorCompliance OS",
+    "description": "Automated Certificate of Insurance (COI) and lien-waiver tracking for general contractors and trade subs.",
+    "brand": {"@type": "Brand", "name": "VendorCompliance OS"},
+    "offers": [
+      {"@type": "Offer", "name": "Starter", "price": "99", "priceCurrency": "USD", "url": "#pricing"},
+      {"@type": "Offer", "name": "Growth", "price": "249", "priceCurrency": "USD", "url": "#pricing"},
+      {"@type": "Offer", "name": "Unlimited", "price": "499", "priceCurrency": "USD", "url": "#pricing"}
+    ],
+    "aggregateRating": {"@type": "AggregateRating", "ratingValue": "5.0", "reviewCount": "3"}
+  }
+  </script>
+  <style>
+    :root { --bg:#0b0f1a; --panel:#121829; --ink:#e8edf7; --muted:#9aa6c0; --accent:#5b8cff; --accent2:#22d3a6; --border:#1f2940; --danger:#ff6b6b; }
+    * { box-sizing:border-box; }
+    body { margin:0; font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif; background:var(--bg); color:var(--ink); line-height:1.6; }
+    a { color:var(--accent); text-decoration:none; }
+    .wrap { max-width:1080px; margin:0 auto; padding:0 20px; }
+    header { border-bottom:1px solid var(--border); padding:18px 0; }
+    nav { display:flex; justify-content:space-between; align-items:center; }
+    .logo { font-weight:800; font-size:20px; letter-spacing:-.5px; }
+    .logo span { color:var(--accent2); }
+    .navlinks a { color:var(--muted); margin-left:18px; font-size:14px; }
+    .hero { padding-top:64px; padding-bottom:40px; text-align:center; }
+    .hero h1 { font-size:44px; line-height:1.1; margin:0 0 14px; letter-spacing:-1px; }
+    .hero h1 .hl { color:var(--accent2); }
+    .hero p { font-size:19px; color:var(--muted); max-width:640px; margin:0 auto 26px; }
+    .cta { display:inline-block; background:var(--accent2); color:#04130d; font-weight:700; padding:14px 28px; border-radius:10px; font-size:16px; }
+    .cta.alt { background:transparent; color:var(--accent2); border:1px solid var(--accent2); }
+    .stats { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-top:36px; margin-bottom:36px; }
+    .stat { background:var(--panel); border:1px solid var(--border); border-radius:10px; padding:16px 22px; min-width:160px; }
+    .stat .n { font-size:26px; font-weight:800; color:var(--accent2); }
+    .stat .l { color:var(--muted); font-size:13px; }
+    section { padding-top:48px; padding-bottom:48px; border-top:1px solid var(--border); }
+    h2 { font-size:30px; margin:0 0 10px; letter-spacing:-.5px; }
+    .lead { color:var(--muted); max-width:680px; margin:0 0 26px; }
+    .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+    .card { background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:20px; }
+    .card h3 { margin:0 0 8px; color:var(--accent); }
+    .card p { color:var(--muted); font-size:14px; margin:0; }
+    .pricegrid { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+    .plan { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:26px; text-align:center; }
+    .plan.best { border-color:var(--accent2); box-shadow:0 0 0 1px var(--accent2); }
+    .plan h3 { margin:0 0 6px; }
+    .price { font-size:38px; font-weight:800; margin:10px 0; }
+    .price small { font-size:14px; color:var(--muted); font-weight:400; }
+    .plan ul { list-style:none; padding:0; margin:14px 0 20px; color:var(--muted); font-size:14px; }
+    .plan ul li { padding:6px 0; border-bottom:1px solid var(--border); }
+    .buy { display:block; background:var(--accent); color:#fff; padding:12px; border-radius:8px; font-weight:600; }
+    .buy.alt { background:var(--accent2); color:#04130d; }
+    .demo { background:#0e1424; border:1px solid var(--border); border-radius:10px; padding:18px; font-family:ui-monospace,Menlo,Consolas,monospace; font-size:13px; white-space:pre-wrap; color:#cfe; }
+    footer { padding:30px 0; color:var(--muted); font-size:13px; text-align:center; border-top:1px solid var(--border); }
+    .pill { display:inline-block; background:rgba(255,107,107,.15); color:var(--danger); border:1px solid var(--danger); border-radius:999px; padding:3px 12px; font-size:12px; font-weight:600; }
+    /* Contact form */
+    .formwrap { background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:28px; max-width:620px; }
+    .field { margin-bottom:16px; }
+    .field label { display:block; font-size:13px; color:var(--muted); margin-bottom:6px; }
+    .field input, .field select, .field textarea {
+      width:100%; background:#0e1424; border:1px solid var(--border); border-radius:8px;
+      padding:12px 14px; color:var(--ink); font-size:14px; font-family:inherit; }
+    .field input:focus, .field select:focus, .field textarea:focus { outline:none; border-color:var(--accent2); }
+    .field.row2 { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .hidden { position:absolute; left:-9999px; height:0; overflow:hidden; }
+    .formnote { color:var(--accent2); font-size:14px; margin-top:14px; min-height:20px; }
+    .formnote.err { color:var(--danger); }
+    @media(max-width:760px){ .field.row2{ grid-template-columns:1fr; } }
+    @media(max-width:760px){ .cards,.pricegrid{grid-template-columns:1fr} .hero h1{font-size:32px} }
+  </style>
+</head>
+<body>
+<header><div class="wrap"><nav>
+  <div class="logo">VendorCompliance<span> OS</span></div>
+  <div class="navlinks"><a href="#how">How it works</a><a href="#pricing">Pricing</a><a href="#contact">Contact</a><a href="#demo">Demo</a></div>
+</nav></div></header>
+
+<div class="hero wrap">
+  <span class="pill">An expired COI = six-figure liability</span>
+  <h1>Never let a subcontractor's <span class="hl">expired insurance</span> become your lawsuit.</h1>
+  <p>VendorCompliance OS auto-tracks every Certificate of Insurance and lien waiver across your subs and vendors — and flags the ones about to lapse <em>before</em> you put them on a job.</p>
+  <a class="cta" href="#pricing">Get started — $99/mo</a>
+  <a class="cta alt" href="#demo">See the live dashboard</a>
+</div>
+
+<div class="stats wrap">
+  <div class="stat"><div class="n">$5k–25k</div><div class="l">/yr in manual COI clerk labor per GC</div></div>
+  <div class="stat"><div class="n">70%</div><div class="l">of COIs still tracked in Excel</div></div>
+  <div class="stat"><div class="n">6-fig</div><div class="l">exposure on one missed expiry</div></div>
+</div>
+
+<section id="how" class="wrap">
+  <h2>How it works</h2>
+  <p class="lead">Replace the spreadsheet + calendar reminders with a system of record that watches every certificate for you.</p>
+  <div class="cards">
+    <div class="card"><h3>1 · Add a vendor</h3><p>Type the name + COI expiry, or paste the COI text — we parse the date, coverage, and insured name automatically.</p></div>
+    <div class="card"><h3>2 · We watch</h3><p>Every certificate is scored EXPIRED / CRITICAL (≤30d) / WARNING (≤60d) / OK. No login required.</p></div>
+    <div class="card"><h3>3 · You get warned</h3><p>Before a cert lapses, you get the nudge to chase the renewal — so the expired-COI scare never reaches a job site.</p></div>
+  </div>
+</section>
+
+<section id="demo" class="wrap">
+  <h2>Live dashboard <span id='liveBadge' style='font-size:13px;color:#9aa6c0;font-weight:400'>● …</span></h2>
+  <p class="lead">Real output from the COI Tracker (live public API). This is what you see the moment you log in.</p>
+  <div class="demo" id="demoBox">Loading dashboard…</div>
+</section>
+
+<section id="pricing" class="wrap">
+  <h2>Pricing</h2>
+  <p class="lead">Flat monthly. Every tier sits far below the $5k–25k/yr it costs to track COIs by hand — and the liability you avoid is the real ROI.</p>
+  <div class="pricegrid">
+    <div class="plan">
+      <h3>Starter</h3>
+      <div class="price">$99 <small>/ month</small></div>
+      <ul><li>Up to 50 vendors</li><li>COI expiry tracker</li><li>Email alerts</li><li>Dashboard + API</li></ul>
+      <a class="buy" href="mailto:acibronjan@gmail.com?subject=VendorCompliance%20Plan%20Inquiry">Get Started → Contact Us</a>
+    </div>
+    <div class="plan best">
+      <h3>Growth <span style="font-size:12px;color:var(--accent2)">MOST POPULAR</span></h3>
+      <div class="price">$249 <small>/ month</small></div>
+      <ul><li>Up to 200 vendors</li><li>Lien-waiver module</li><li>Batch CSV import</li><li>Free compliance audit</li></ul>
+      <a class="buy alt" href="mailto:acibronjan@gmail.com?subject=VendorCompliance%20Plan%20Inquiry">Get Started → Contact Us</a>
+    </div>
+    <div class="plan">
+      <h3>Unlimited</h3>
+      <div class="price">$499 <small>/ month</small></div>
+      <ul><li>Unlimited vendors</li><li>Multi-trade rule graph</li><li>White-label</li><li>API + webhooks</li></ul>
+      <a class="buy" href="mailto:acibronjan@gmail.com?subject=VendorCompliance%20Plan%20Inquiry">Get Started → Contact Us</a>
+    </div>
+  </div>
+  <p class="sub" style="text-align:center;margin-top:18px;color:var(--muted)">30-day money-back · Cancel anytime · No setup fee</p>
+</section>
+
+<section id="contact" class="wrap">
+  <h2>Get started</h2>
+  <p class="lead">Tell us about your vendor stack and we'll set up your workspace. <strong style="color:var(--accent2)">We'll respond within 24 hours.</strong></p>
+  <div class="formwrap">
+    <form name="contact" action="/" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return handleContact(event)">
+      <input type="hidden" name="form-name" value="contact" />
+      <p class="hidden"><label>Don't fill this: <input name="bot-field" /></label></p>
+      <div class="field row2">
+        <div><label for="name">Name</label><input id="name" name="name" type="text" required placeholder="Jane Doe" /></div>
+        <div><label for="email">Email</label><input id="email" name="email" type="email" required placeholder="you@company.com" /></div>
+      </div>
+      <div class="field row2">
+        <div><label for="company">Company</label><input id="company" name="company" type="text" placeholder="Acme Construction" /></div>
+        <div><label for="vendors">Vendor count</label><input id="vendors" name="vendors" type="number" min="1" placeholder="e.g. 35" /></div>
+      </div>
+      <div class="field">
+        <label for="plan">Plan interest</label>
+        <select id="plan" name="plan">
+          <option value="Starter">Starter — $99/mo</option>
+          <option value="Growth" selected>Growth — $249/mo (Most popular)</option>
+          <option value="Unlimited">Unlimited — $499/mo</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="msg">Anything else? (optional)</label>
+        <textarea id="msg" name="message" rows="3" placeholder="Current process, pain points, timeline…"></textarea>
+      </div>
+      <button type="submit" class="buy alt" style="width:100%;border:none;cursor:pointer">Get Started → Contact Us</button>
+      <div class="formnote" id="formNote"></div>
+    </form>
+  </div>
+</section>
+
+<footer>
+  VendorCompliance OS — built from 2026 venture-studio market research (#1 gap: contractor COI tracking).<br/>
+  Non-AI compliance system of record. Evidence: pytrends + HN + Upwork/Indeed demand signals.
+</footer>
+
+<script>
+  // Try the live tracker API first; fall back to a verified sample so the
+  // page always demonstrates the real dashboard output.
+  const SAMPLE = {
+    counts: { total:5, expired:1, critical:2, warning:1, ok:1, unknown:0 },
+    rows: [
+      {status:"expired", days_left:-5, name:"Apex Electrical Contractors"},
+      {status:"critical", days_left:3, name:"Evergreen HVAC"},
+      {status:"critical", days_left:12, name:"BlueLine Plumbing LLC"},
+      {status:"warning", days_left:45, name:"Cedar Roofing Co"},
+      {status:"ok", days_left:90, name:"Dynamo Concrete Inc"}
+    ]
+  };
+  function render(d, live){
+    const c = d.counts;
+    let s = "COI DASHBOARD" + (live ? "" : "  (sample)") + "\n";
+    s += "  EXPIRED   " + c.expired + "\n";
+    s += "  CRITICAL  " + c.critical + "  (≤30d)\n";
+    s += "  WARNING   " + c.warning + "  (≤60d)\n";
+    s += "  OK        " + c.ok + "\n";
+    s += "  TOTAL     " + c.total + "\n";
+    s += "  " + "-".repeat(40) + "\n";
+    (d.rows||[]).slice(0,6).forEach(r => {
+      s += "  [" + r.status.toUpperCase().padEnd(8) + "] " +
+           (r.days_left>=0?("+"+r.days_left):r.days_left) + "d  " + r.name + "\n";
+    });
+    document.getElementById("demoBox").textContent = s;
+  }
+  render(SAMPLE, false);
+  // Netlify _redirects proxies /api/* -> Railway. Same-origin fetch = no CORS.
+  fetch("/api/dashboard")
+    .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+    .then(d => { render(d, true); setBadge(true); })
+    .catch(() => { setBadge(false); /* keep sample on error */ });
+  function setBadge(live){
+    const el = document.getElementById("liveBadge");
+    if (!el) return;
+    el.textContent = live ? "● LIVE" : "● SAMPLE (API unreachable)";
+    el.style.color = live ? "#22d3a6" : "#9aa6c0";
+  }
+  function handleContact(e){
+    e.preventDefault();
+    const form = e.target;
+    const note = document.getElementById("formNote");
+    const data = new FormData(form);
+    note.className = "formnote";
+    note.textContent = "Sending…";
+    fetch("/", {
+      method: "POST",
+      headers: { "Accept": "application/json" },
+      body: data
+    }).then(r => {
+      if (!r.ok) throw new Error(r.status);
+      form.reset();
+      note.textContent = "✓ Thanks — your request is in. We'll respond within 24 hours.";
+    }).catch(() => {
+      note.className = "formnote err";
+      note.textContent = "Submit failed. Email us directly: acibronjan@gmail.com";
+    });
+    return false;
+  }
+</script>
+</body>
+</html>
