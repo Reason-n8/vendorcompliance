@@ -36,6 +36,7 @@
 // ---- CONFIG (edit these) ----
 var OWNER_EMAIL = "acibronjan@gmail.com"; // where digests + alerts go
 var REPLY_DETECTION = true; // native checkReplies() handles reply detection (no Make needed)
+var AUTO_MOVE_PROSPECTS = false; // true = replies auto-copy to Leads; false = notify only (manual move)
 
 // ===========================================================================
 // doPost — called by the site forms. Appends a scored, prioritized lead row
@@ -494,9 +495,17 @@ function checkReplies() {
     }
     if (!found) continue;
 
-    // Mark Replied + record, and queue a notification.
-    sheet.getRange(i + 1, 7).setValue('Replied');          // Status col
+    // Mark Last Contact + record for notification.
     sheet.getRange(i + 1, 10).setValue(new Date());         // Last Contact col
+
+    if (AUTO_MOVE_PROSPECTS) {
+      // Auto-copy the prospect to the Leads tab (scoring carries over).
+      moveProspectToLeads(data[i]);
+      sheet.getRange(i + 1, 7).setValue('Moved to Leads');  // Status col
+    } else {
+      sheet.getRange(i + 1, 7).setValue('Replied');         // Status col (manual move)
+    }
+
     matched.push({
       name: data[i][1] || '',
       company: data[i][3] || '',
@@ -511,8 +520,36 @@ function checkReplies() {
              (x.company ? " — " + x.company : "") + "\n  Subject: " + x.subject;
     }).join("\n\n");
     MailApp.sendEmail(OWNER_EMAIL,
-      "💬 " + matched.length + " prospect reply" + (matched.length > 1 ? "ies" : "") + " — review & move to Leads",
-      "Prospect replies detected (status set to Replied):\n\n" + lines +
-      "\n\nMove them to the Leads tab when ready. They're already scored.");
+      "💬 " + matched.length + " prospect reply" + (matched.length > 1 ? "ies" : "") + " — " + (AUTO_MOVE_PROSPECTS ? "auto-moved to Leads" : "review & move to Leads"),
+      (AUTO_MOVE_PROSPECTS
+        ? "Replies auto-copied to the Leads tab (status: Moved to Leads). They're already scored and will be nudged.\n\n"
+        : "Prospect replies detected (status set to Replied):\n\n" + lines +
+          "\n\nMove them to the Leads tab when ready. They're already scored.") +
+      (AUTO_MOVE_PROSPECTS ? lines + "\n" : ""));
   }
+}
+
+// Copy a Prospects row into the Leads tab (scoring/priority carry over).
+// Maps Prospects columns -> Leads columns and sets Status = "New" so the
+// existing Leads nudges/digests treat it as a fresh lead.
+function moveProspectToLeads(pRow) {
+  var leads = getLeadsSheet();
+  if (!leads) return;
+  var now = new Date();
+  leads.appendRow([
+    pRow[0] || now,        // Timestamp
+    pRow[1] || '',         // Name
+    pRow[2] || '',         // Email
+    pRow[3] || '',         // Company
+    '',                    // Plan Interest (lead picks later)
+    '',                    // Vendor Count
+    'Replied via email — auto-moved from Prospects', // Message
+    pRow[5] || '',         // Source
+    'New',                 // Status
+    pRow[7] || '',         // Lead Score
+    pRow[8] || '',         // Priority
+    now,                   // Last Contact
+    '',                    // Follow-up Date
+    pRow[11] || ''         // Notes
+  ]);
 }
