@@ -181,6 +181,8 @@ function scoreProspect(p) {
   else if (/agency|marketing|seo|advertis/i.test(ind)) base = 78;
   // SaaS / AI (RankFixer fit)
   else if (/saas|ai|software|tech|startup/i.test(ind)) base = 75;
+  // Blockchain / Web3 (Pruweba fit)
+  else if (/blockchain|web3|crypto|onchain|defi|token/i.test(ind)) base = 80;
   else if (/e?commerce|retail|shop/i.test(ind)) base = 60;
 
   var src = (p.source || '').toString().toLowerCase();
@@ -249,6 +251,12 @@ function scoreLead(p) {
   else if (plan.indexOf('paid report') >= 0) base = 75;
   else if (plan.indexOf('starter') >= 0) base = 60;
   else if (plan.indexOf('free') >= 0) base = 40;
+
+  // Pruweba interest / use-case scoring (form sends `interest`)
+  if (/enterprise|compliance|regulated|government|fortune/i.test(plan)) base = 90;
+  else if (/api.?first|platform|integration|ss[oe]|resell/i.test(plan)) base = 84;
+  else if (/blockchain|web3|crypto|onchain|smart.?contract/i.test(plan)) base = 80;
+  else if (/agent|llm|ai\b|model|verif/i.test(plan)) base = 75;
 
   var v = parseInt(p.vendors || '0', 10) || 0;
   if (v >= 50) base += 8;
