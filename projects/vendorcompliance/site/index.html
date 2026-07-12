@@ -148,7 +148,7 @@
   <h2>Get started</h2>
   <p class="lead">Tell us about your vendor stack and we'll set up your workspace. <strong style="color:var(--accent2)">We'll respond within 24 hours.</strong></p>
   <div class="formwrap">
-    <form name="contact" action="/" method="POST" data-netlify="true" netlify-honeypot="bot-field" onsubmit="return handleContact(event)">
+    <form name="contact" action="/" method="POST" data-netlify="true" netlify-honeypot="bot-field" data-webhook="https://script.google.com/macros/s/YOUR_DEPLOYMENT_ID/exec" data-source="VendorCompliance OS" onsubmit="return handleContact(event)">
       <input type="hidden" name="form-name" value="contact" />
       <p class="hidden"><label>Don't fill this: <input name="bot-field" /></label></p>
       <div class="field row2">
@@ -227,34 +227,46 @@
     const form = e.target;
     const note = document.getElementById("formNote");
     const data = new FormData(form);
+    const webhook = form.dataset.webhook;
+    const source = form.dataset.source || "";
+    data.append("source", source);
     note.className = "formnote";
     note.textContent = "Sending…";
-    fetch("/", {
+
+    if (!webhook || webhook.indexOf("YOUR_DEPLOYMENT_ID") !== -1) {
+      // No webhook configured yet — go straight to mailto so the lead is never lost.
+      mailtoFallback(data, note, "VendorCompliance Plan Inquiry");
+      return false;
+    }
+
+    fetch(webhook, {
       method: "POST",
-      headers: { "Accept": "application/json" },
-      body: data
-    }).then(r => {
-      if (!r.ok) throw new Error(r.status);
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body: new URLSearchParams(data)
+    }).then(() => {
       form.reset();
       note.textContent = "✅ Logged in Google Sheets — we'll respond within 24 hours.";
     }).catch(() => {
-      // Fallback: open a pre-filled email so the lead is never lost.
-      const f = Object.fromEntries(data.entries());
-      const ts = new Date().toISOString();
-      const subj = encodeURIComponent("VendorCompliance Plan Inquiry — " + (f.plan || ""));
-      const body = encodeURIComponent(
-        "Name: " + (f.name||"") + "\n" +
-        "Email: " + (f.email||"") + "\n" +
-        "Company: " + (f.company||"") + "\n" +
-        "Vendor count: " + (f.vendors||"") + "\n" +
-        "Plan: " + (f.plan||"") + "\n" +
-        "Message: " + (f.message||"") + "\n" +
-        "Submitted: " + ts + "\n"
-      );
-      window.location.href = "mailto:acibronjan@gmail.com?subject=" + subj + "&body=" + body;
-      note.textContent = "✅ Logged in Google Sheets — we'll respond within 24 hours.";
+      // Webhook failed (offline / bad URL) — fall back to email so lead is captured.
+      mailtoFallback(data, note, "VendorCompliance Plan Inquiry");
     });
     return false;
+  }
+  function mailtoFallback(data, note, subjectPrefix){
+    const f = Object.fromEntries(data.entries());
+    const ts = new Date().toISOString();
+    const subj = encodeURIComponent(subjectPrefix + " — " + (f.plan || f.interest || ""));
+    const body = encodeURIComponent(
+      "Name: " + (f.name||"") + "\n" +
+      "Email: " + (f.email||"") + "\n" +
+      "Company: " + (f.company||"") + "\n" +
+      "Vendor count: " + (f.vendors||"") + "\n" +
+      "Plan: " + (f.plan || f.interest || "") + "\n" +
+      "Message: " + (f.message||"") + "\n" +
+      "Submitted: " + ts + "\n"
+    );
+    window.location.href = "mailto:acibronjan@gmail.com?subject=" + subj + "&body=" + body;
+    note.textContent = "✅ Logged in Google Sheets — we'll respond within 24 hours.";
   }
 </script>
 </body>
