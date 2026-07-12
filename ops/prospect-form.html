@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Prospect — RankFixer / VendorCompliance</title>
+    <style>
+        :root { --brand:#6C5CE7; --brand-hover:#5A4BD1; --bg:#0D0D1A; --bg-card:#151528; --bg-input:#1E1E36; --text:#F0F0F5; --text-muted:#8888A0; --border:#2A2A45; --radius:12px; --radius-sm:8px; --font:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif; }
+        * { box-sizing:border-box; margin:0; padding:0; }
+        body { font-family:var(--font); background:var(--bg); color:var(--text); line-height:1.6; min-height:100vh; display:flex; align-items:center; justify-content:center; padding:1.5rem; }
+        .card { background:var(--bg-card); border:1px solid var(--border); border-radius:var(--radius); padding:2rem; width:100%; max-width:460px; }
+        h1 { font-size:1.3rem; font-weight:700; margin-bottom:0.3rem; }
+        p.sub { color:var(--text-muted); font-size:0.9rem; margin-bottom:1.5rem; }
+        label { display:block; font-size:0.82rem; color:var(--text-muted); margin:0.8rem 0 0.35rem; }
+        input, select { width:100%; background:var(--bg-input); border:1px solid var(--border); border-radius:var(--radius-sm); padding:0.7rem 0.85rem; color:var(--text); font-size:0.9rem; font-family:var(--font); }
+        input:focus, select:focus { outline:none; border-color:var(--brand); }
+        button { width:100%; background:var(--brand); color:#fff; border:none; padding:0.85rem; border-radius:var(--radius-sm); font-weight:700; font-size:0.95rem; cursor:pointer; margin-top:1.5rem; font-family:var(--font); }
+        button:hover { background:var(--brand-hover); }
+        .note { font-size:0.8rem; color:var(--text-muted); margin-top:1rem; min-height:1.1rem; text-align:center; }
+        .note.err { color:#ff6b6b; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>Add a Prospect</h1>
+        <p class="sub">Drops into the Prospects tab, scored + queued for daily outreach.</p>
+        <form id="pf" onsubmit="return submitProspect(event)">
+            <label for="name">Name</label>
+            <input id="name" name="name" type="text" required placeholder="Jane Doe">
+            <label for="email">Email</label>
+            <input id="email" name="email" type="email" required placeholder="jane@company.com">
+            <label for="company">Company</label>
+            <input id="company" name="company" type="text" placeholder="Acme Construction">
+            <label for="industry">Industry</label>
+            <select id="industry" name="industry">
+                <option value="Construction">Construction / Contractor</option>
+                <option value="Insurance">Insurance</option>
+                <option value="Real Estate">Real Estate / Property</option>
+                <option value="Agency">Agency / Marketing</option>
+                <option value="SaaS">SaaS / AI / Software</option>
+                <option value="Ecommerce">Ecommerce / Retail</option>
+                <option value="Other">Other</option>
+            </select>
+            <label for="source">Source</label>
+            <select id="source" name="source">
+                <option value="manual">Manual entry</option>
+                <option value="LinkedIn">LinkedIn</option>
+                <option value="Referral">Referral</option>
+                <option value="Cold list">Cold list</option>
+            </select>
+            <button type="submit">Add Prospect</button>
+            <div class="note" id="note"></div>
+        </form>
+    </div>
+
+    <script>
+    // Paste your deployed Apps Script webhook URL here:
+    var WEBHOOK = "https://script.google.com/macros/s/AKfycbzyyKA0A2RFixVUPLzcWUHSMNBQT0O28nac_nIDSvyIYgQWyU7NvPt-XgdgEGvj2pp-dg/exec";
+
+    function submitProspect(e){
+        e.preventDefault();
+        var form = e.target;
+        var note = document.getElementById('note');
+        var data = new FormData(form);
+        data.append('type', 'prospect');
+        note.className = 'note'; note.textContent = 'Saving…';
+
+        if (!WEBHOOK || WEBHOOK.indexOf('AKfycbz') === -1) {
+            note.className = 'note err';
+            note.textContent = 'Webhook not configured.';
+            return false;
+        }
+
+        fetch(WEBHOOK, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams(data)
+        }).then(function(r){ return r.text(); }).then(function(){
+            form.reset();
+            note.textContent = '✅ Prospect added — scored & queued for outreach.';
+        }).catch(function(){
+            // Fallback: open email to owner with the details.
+            var f = Object.fromEntries(data.entries());
+            var body = encodeURIComponent(
+                'New prospect\nName: '+(f.name||'')+'\nEmail: '+(f.email||'')+
+                '\nCompany: '+(f.company||'')+'\nIndustry: '+(f.industry||'')+
+                '\nSource: '+(f.source||'')+'\n');
+            window.location.href = 'mailto:acibronjan@gmail.com?subject='+
+                encodeURIComponent('New Prospect — '+(f.company||f.name))+'&body='+body;
+            note.textContent = '✅ Saved (email fallback opened).';
+        });
+        return false;
+    }
+    </script>
+</body>
+</html>

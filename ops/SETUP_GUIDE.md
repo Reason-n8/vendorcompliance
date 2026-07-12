@@ -88,4 +88,46 @@ opted in via the form (consent).
 ## FILES
 - `google-apps-script.js` — full Code.gs (Phase 1 live + Phase 2/3 stubs).
 - `leads-template.csv` — 14-col header + 2 sample rows (now includes Priority).
+- `prospect-form.html` — simple manual-entry page that POSTs to the webhook.
 - Both sites' forms POST to the webhook (verified `{"result":"ok"}`).
+
+---
+
+## PROSPECTS (lead-finding engine) — Phase 1
+
+The same `doPost` webhook handles prospects: send `type=prospect` and the
+script routes to a **Prospects** tab (auto-created on first submission).
+
+### Add the "Prospects" tab
+It's created automatically the first time a prospect is submitted
+(`getProspectsSheet()` inserts it with the header). No manual setup.
+
+Prospects header (12 cols):
+`Timestamp | Name | Email | Company | Industry | Source | Status |
+Lead Score | Priority | Last Contact | Next Touch | Notes`
+
+### Scoring (prospects)
+Industry base: Construction/Insurance/RealEstate = 80, Agency/Marketing = 78,
+SaaS/AI = 75, Ecommerce = 60, Other = 50. Source bump: referral +10,
+LinkedIn +5, cold-list +3. Caps at 100. Priority = High/Med/Low (same bands).
+
+### Manual entry form
+`prospect-form.html` — open it (or host it) and fill Name/Email/Company/
+Industry/Source. It POSTs to the webhook with `type=prospect`. Replace the
+`WEBHOOK` const at the top with your URL if needed (it's pre-filled).
+Mailto fallback if the webhook is unreachable.
+
+### Daily prospect outreach trigger (NEW)
+Add one more time-driven trigger in Apps Script:
+| Function            | Event source | Type        | Frequency   |
+|---------------------|--------------|-------------|-------------|
+| `sendProspectEmails`| Time-driven  | Day timer   | 9am–10am    |
+
+`sendProspectEmails` emails every **New** prospect whose Next Touch is due, sets
+Status→Contacted, stamps Last Contact, and schedules Next Touch +3d. Caps at
+90/day (free quota). You get a "📤 Prospect outreach: N sent" summary.
+Hot (High) prospects also fire a 🔥 alert on submission.
+
+Note: `sendProspectEmails` and `runNudges` both send Gmail — together they
+must stay under ~100 sends/day on the free tier. If you scale past that,
+move sequences to Make/Zapier (Phase 2).

@@ -52,6 +52,11 @@ function doPost(e) {
       try { p = JSON.parse(e.postData.contents); } catch (err) { /* keep empty */ }
     }
 
+    // Route prospect submissions to the Prospects tab (lead-finding engine).
+    if ((p.type || '').toString().toLowerCase() === 'prospect') {
+      return appendProspect(p);
+    }
+
     var now = new Date();
     var score = scoreLead(p);
     var priority = priorityFromScore(score);
@@ -110,8 +115,130 @@ function doGet(e) {
 }
 
 // ===========================================================================
-// SCORING
+// PROSPECTS (lead-finding engine, Phase 1)
 // ===========================================================================
+
+// Columns: Timestamp | Name | Email | Company | Industry | Source |
+//          Status | Lead Score | Priority | Last Contact | Next Touch | Notes
+var PROSPECT_HEADER = ['Timestamp','Name','Email','Company','Industry','Source',
+  'Status','Lead Score','Priority','Last Contact','Next Touch','Notes'];
+
+function getProspectsSheet() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sheet = ss.getSheetByName('Prospects');
+  if (!sheet) {
+    sheet = ss.insertSheet('Prospects');
+    sheet.appendRow(PROSPECT_HEADER);
+    sheet.setFrozenRows(1);
+  }
+  return sheet;
+}
+
+function appendProspect(p) {
+  try {
+    var sheet = getProspectsSheet();
+    var now = new Date();
+    var score = scoreProspect(p);
+    var priority = priorityFromScore(score);
+    var nextTouch = new Date(now.getTime() + 2 * 86400000); // first touch +2d
+    sheet.appendRow([
+      now,
+      p.name || '',
+      p.email || '',
+      p.company || '',
+      p.industry || '',
+      p.source || 'manual',
+      'New',
+      score,
+      priority,
+      '',
+      nextTouch,
+      ''
+    ]);
+    // High-value alert for hot prospects
+    if (priority === 'High') {
+      MailApp.sendEmail(OWNER_EMAIL,
+        "🔥 Hot prospect: " + (p.company || p.name || 'unknown'),
+        "New prospect — " + (p.name || '') + " (" + (p.email || '') + ")\n" +
+        "Industry: " + (p.industry || '') + "\nSource: " + (p.source || '') + "\n" +
+        "Score: " + score + " / " + priority);
+    }
+    return ContentService.createTextOutput(JSON.stringify({ result: 'ok', type: 'prospect' }))
+      .setMimeType(ContentService.MimeType.JSON);
+  } catch (err) {
+    return ContentService.createTextOutput(JSON.stringify({ result: 'error', error: String(err) }))
+      .setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function scoreProspect(p) {
+  var ind = (p.industry || '').toString().toLowerCase();
+  var base = 50;
+  // High-value industries for VendorCompliance OS
+  if (/construction|contractor|insurance|real.?estate|property|facilit/i.test(ind)) base = 80;
+  // Agencies / marketing (resell or Pro users)
+  else if (/agency|marketing|seo|advertis/i.test(ind)) base = 78;
+  // SaaS / AI (RankFixer fit)
+  else if (/saas|ai|software|tech|startup/i.test(ind)) base = 75;
+  else if (/e?commerce|retail|shop/i.test(ind)) base = 60;
+
+  var src = (p.source || '').toString().toLowerCase();
+  if (/referr/i.test(src)) base += 10;
+  else if (/linkedin/i.test(src)) base += 5;
+  else if (/cold|list|scrap/i.test(src)) base += 3;
+  return Math.min(100, base);
+}
+
+function sendProspectEmails() {
+  var sheet = getProspectsSheet();
+  if (!sheet) return;
+  var data = sheet.getDataRange().getValues();
+  var today = new Date();
+  var sent = 0;
+  var CAP = 90; // stay within Apps Script free quota
+  for (var i = 1; i < data.length && sent < CAP; i++) {
+    var status = (data[i][6] || '').toString();
+    if (status !== 'New') continue;
+    var nextTouch = data[i][10];
+    if (nextTouch instanceof Date && nextTouch > today) continue;
+    var email = data[i][2];
+    if (!email) continue;
+    var product = pickProduct(data[i][4]);
+    GmailApp.sendEmail(email,
+      "Quick idea for " + (data[i][3] || 'your team'),
+      coldEmailBody(data[i][1], data[i][3], data[i][4], product));
+    sheet.getRange(i + 1, 7).setValue('Contacted');     // Status
+    sheet.getRange(i + 1, 10).setValue(today);           // Last Contact
+    sheet.getRange(i + 1, 11).setValue(new Date(today.getTime() + 3 * 86400000)); // Next Touch +3d
+    sent++;
+  }
+  if (sent > 0) {
+    MailApp.sendEmail(OWNER_EMAIL, "📤 Prospect outreach: " + sent + " sent",
+      sent + " prospect emails sent today.");
+  }
+}
+
+function pickProduct(industry) {
+  var ind = (industry || '').toString().toLowerCase();
+  if (/saas|ai|software|tech|startup/i.test(ind)) return 'RankFixer';
+  if (/construction|contractor|insurance|real.?estate|property|facilit/i.test(ind)) return 'VendorCompliance OS';
+  return 'RankFixer / VendorCompliance OS';
+}
+
+function coldEmailBody(name, company, industry, product) {
+  var first = (name || 'there').split(' ')[0];
+  return "Hi " + first + ",\n\n" +
+    "Came across " + (company || 'your company') + " and noticed " +
+    (industry ? "(" + industry + ") " : "") + "teams like yours often have AI-visibility or vendor-compliance blind spots that quietly cost pipeline.\n\n" +
+    product + " helps fix that in under 20 minutes — no setup, no sales call required to see your score.\n\n" +
+    "Worth a 2-line reply if it's relevant? Happy to send a free teardown.\n\n" +
+    "Best,\nJan\n\n" +
+    "---\nUnsubscribe: reply \"stop\" and I'll never email again. (" + OWNER_EMAIL + ")";
+}
+
+// ===========================================================================
+// SCORING
+
 function scoreLead(p) {
   var plan = (p.plan || p.interest || '').toString().toLowerCase();
   var base = 50;
