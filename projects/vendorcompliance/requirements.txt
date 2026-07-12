@@ -1,0 +1,2 @@
+# VendorCompliance OS — stdlib-only Python app. No third-party dependencies.
+# Railpack (Railway's builder) detects Python from this file.
