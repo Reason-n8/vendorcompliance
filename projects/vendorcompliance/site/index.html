@@ -238,8 +238,21 @@
       form.reset();
       note.textContent = "✓ Thanks — your request is in. We'll respond within 24 hours.";
     }).catch(() => {
-      note.className = "formnote err";
-      note.textContent = "Submit failed. Email us directly: acibronjan@gmail.com";
+      // Fallback: open a pre-filled email so the lead is never lost.
+      const f = Object.fromEntries(data.entries());
+      const ts = new Date().toISOString();
+      const subj = encodeURIComponent("VendorCompliance Plan Inquiry — " + (f.plan || ""));
+      const body = encodeURIComponent(
+        "Name: " + (f.name||"") + "\n" +
+        "Email: " + (f.email||"") + "\n" +
+        "Company: " + (f.company||"") + "\n" +
+        "Vendor count: " + (f.vendors||"") + "\n" +
+        "Plan: " + (f.plan||"") + "\n" +
+        "Message: " + (f.message||"") + "\n" +
+        "Submitted: " + ts + "\n"
+      );
+      window.location.href = "mailto:acibronjan@gmail.com?subject=" + subj + "&body=" + body;
+      note.textContent = "✓ Opening your email app to send the request. We'll respond within 24 hours.";
     });
     return false;
   }
