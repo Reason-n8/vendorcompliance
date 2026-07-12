@@ -1,0 +1,18 @@
+[build]
+  base = "projects/vendorcompliance"
+  publish = "site"
+  functions = "netlify/functions"
+
+[build.environment]
+  PYTHON_VERSION = "3.11"
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/coi"
+  status = 200
+
+[dev]
+  base = "projects/vendorcompliance"
+  targetPort = 8766
+  port = 8888
+  publish = "site"
