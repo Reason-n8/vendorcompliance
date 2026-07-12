@@ -1,98 +1,91 @@
-# Google Sheets Lead Tracking — Setup & Workflow
+# Lead-to-Cash System — Setup & Workflow
 
-Free, no-API lead tracking for **VendorCompliance OS** and **RankFixer**.
-Both sites' forms now show "✅ Logged in Google Sheets" on submit. This guide
-shows how to stand up the sheet and the manual (or automated) workflow.
+Autonomous lead pipeline for **VendorCompliance OS** + **RankFixer**.
+Phases 1 is fully automated in Google Sheets + Apps Script (free). Phases
+2–3 add Make/Zapier, Calendly, and Stripe (free/freemium tiers).
 
 ---
 
-## 1. CREATE THE SHEET (2 minutes)
+## PHASE 1 (DONE — Google Sheets + Apps Script, free)
 
-1. Open https://sheets.google.com → **Blank** → name it `Leads — VC + RankFixer`.
-2. Copy the header row from `leads-template.csv` (or just open the CSV and
-   **File → Import → Upload** the CSV, then rename the tab to `Leads`).
-3. Header columns:
+### 1a. Sheet setup
+1. Open your **Leads** Google Sheet → first tab named exactly `Leads`.
+2. Header row (14 cols), copy from `leads-template.csv`:
    `Timestamp | Name | Email | Company | Plan Interest | Vendor Count |
-   Message | Source | Status | Lead Score | Last Contact | Follow-up Date | Notes`
-4. **Format** the `Timestamp`, `Last Contact`, `Follow-up Date` columns as
-   Date/Time (Format → Number → Date time / Date).
-5. **Data → Protected sheets & ranges** (optional): lock the header row.
-6. **Share** (top-right) → add your team emails, set "Editor", or get a
-   shareable link (View or Edit as you prefer).
+   Message | Source | Status | Lead Score | Priority | Last Contact |
+   Follow-up Date | Notes`
+3. Format Timestamp / Last Contact / Follow-up Date as Date/Time.
+4. Import `leads-template.csv` (has 2 sample rows) or just paste the header.
 
-That's it — the sheet is ready. The `leads-template.csv` already has 2 sample
-rows (one VendorCompliance lead, one RankFixer lead) so you can see the shape.
+### 1b. Apps Script
+1. Extensions → Apps Script → **replace all code** with `google-apps-script.js`.
+2. Edit the CONFIG at top: `OWNER_EMAIL` (where digests go).
+3. Save. The `doPost` already receives form posts (webhook wired in both sites).
 
----
+### 1c. Enable time-driven triggers (3 clicks each)
+Edit → **Current project's triggers** → **+ Add trigger**:
+| Function        | Event source | Type            | Frequency        |
+|-----------------|--------------|-----------------|------------------|
+| `runNudges`     | Time-driven  | Day timer       | 7am–8am          |
+| `sendDailyDigest`| Time-driven  | Day timer       | 8am–9am          |
+| `sendWeeklyReport`| Time-driven | Week timer     | Monday, 9am–10am |
 
-## 2. MANUAL WORKFLOW (no code, free forever)
+Authorize when Google prompts (Gmail + Sheets scopes).
 
-Every form submit lands in your inbox as a mailto to `acibronjan@gmail.com`
-(the sites use a mailto fallback because Netlify Forms detection is flaky in
-this subdir setup — the email still arrives).
+### 1d. What happens automatically (Phase 1)
+- **On submit:** row appended with **Lead Score** + **Priority** (High/Med/Low)
+  + **Follow-up Date** auto-set (High +1d, Med +2d, Low +4d).
+- **High/Medium lead:** instant personalized Gmail intro to the lead +
+  🔥 alert to you. Low leads: logged, no email (you can change this).
+- **+3 days no reply:** gentle nudge sent, Status → Contacted.
+- **+7 days no reply:** Status → Cold.
+- **Daily 8am:** digest email (new leads, high-priority count, pipeline $).
+- **Monday:** weekly conversion report.
 
-When a lead email arrives:
-1. Open the **Leads** sheet.
-2. Add a new row; paste: Name, Email, Company, Plan Interest, Vendor Count,
-   Message, Source (which site), Timestamp.
-3. Set **Status** = `New`.
-4. Give a **Lead Score** (0–100): e.g. Unlimited/$249 + real vendor count = high.
-5. As you work it, move Status: `New → Contacted → Demo → Negotiating → Won/Lost`
-   and fill **Last Contact** + **Follow-up Date**.
-
-Status dropdown (add via Data → Data validation → List of items):
-`New,Contacted,Demo,Negotiating,Won,Lost`
-
----
-
-## 3. AUTOMATED WORKFLOW (optional, free tier)
-
-Skip the manual paste using Zapier or Make free tier. Both have a free plan
-(~100 tasks/month — plenty for early leads). No coding.
-
-### Zapier (free)
-- **Trigger:** Email (Zapier's built-in parser) OR, better, switch the site
-  forms to a service Zapier can read. Simplest reliable path today:
-  - Use **Zapier Email Parser** (parser.zapier.com): forward the lead emails to
-    the parser address; map fields (Name/Email/Company/Plan/Message/Source);
-    **Action:** Create Google Sheets row in your `Leads` sheet.
-- Or: once Netlify Forms is registered (set site base dir in dashboard), use
-  **Trigger: Netlify → New Form Submission** → Action: Google Sheets.
-
-### Make (free)
-- Scenario: **Webhook (custom mailto→? )** — same idea; simplest is the email
-  parser route: Email → Google Sheets "Add a row".
-
-> Note: the sites currently open a `mailto:` (the lead's own email app) on
-> submit. To enable true auto-logging without manual paste, the cleanest upgrade
-> is to point the form at a Zapier/Make inbound email address OR enable Netlify
-> Forms + Zapier. Both are free-tier friendly. Until then, the manual paste
-> (step 2) is the workflow and the success message is accurate about the
-> destination.
+Scoring rules (in script, easy to tune):
+Unlimited=90, Pro=82, Growth=80, Paid Report=75, Starter=60, Free Scan=40;
++ vendor-count bump for VC leads (≥50→+8, ≥20→+5, ≥5→+2). Caps at 100.
 
 ---
 
-## 4. COLUMN REFERENCE
+## PHASE 2 (Make.com / Zapier free + Calendly free) — wire next
 
-| Column         | Example                       | Notes                                  |
-|----------------|-------------------------------|----------------------------------------|
-| Timestamp      | 2026-07-12 09:14              | When submitted                        |
-| Name           | Jane Doe                      |                                        |
-| Email          | jane@brightsaas.io            |                                        |
-| Company        | Bright SaaS                   |                                        |
-| Plan Interest  | Starter / Growth / Unlimited  | VC: Starter/Growth/Unlimited           |
-|                | Paid Report / Pro / Free Scan | RF: Paid Report/Pro/Free Scan          |
-| Vendor Count   | 12                            | VC only (subs to track)                |
-| Message        | "Want competitor comparison"  | Free-text from form                    |
-| Source         | VendorCompliance OS / RankFixer | Which site                     |
-| Status         | New → Won/Lost                | Kanban stages                          |
-| Lead Score     | 0–100                         | Your qualification score               |
-| Last Contact   | 2026-07-12                    | Date of last touch                     |
-| Follow-up Date | 2026-07-15                    | Next action due                        |
-| Notes          | "Sent teaser score"           | Free-text                              |
+Apps Script covers Day-1 + Day-3 nudges. For the full Day 1/3/7 sequence,
+reply detection, and demo scheduling, use Make/Zapier:
+
+1. **Trigger:** Google Sheets — new row (Status = New).
+2. **Day 1:** already sent by `doPost` (skip duplicate in Make).
+3. **Day 3 / Day 7:** Make/Zapier sends sequence emails (or rely on runNudges).
+4. **Reply detection:** Gmail "new reply" → set Status = Contacted (Make
+   writes back to the sheet row). When Status = Demo, Make sends a Calendly
+   link via GmailApp.
+5. **Calendly:** free account; Calendly webhook → on booked, set Status =
+   Demo + send confirmation email.
+Free tier: ~100 ops/month (enough for early leads).
+
+Set `REPLY_DETECTION = true` in the script once Phase 2 is live.
 
 ---
 
-## 5. FILES
-- `leads-template.csv` — import-ready headers + 2 sample rows.
-- Both sites deployed with success message: "✅ Logged in Google Sheets — we'll respond within 24 hours."
+## PHASE 3 (Stripe) — wire when ready
+
+1. Stripe account (pay-as-you-go; no monthly fee).
+2. Store secret key in **Script Properties** (NOT in code):
+   script editor → Project Settings → Script Properties → `STRIPE_KEY`.
+3. After demo (Status = Negotiating → Won): call `createStripeCheckout()`
+   (stub in `google-apps-script.js`) to email a Checkout link.
+4. Stripe webhook → on `checkout.session.completed` → send **welcome email
+   + onboarding link**, set Status = Won. On decline/reject → log reason,
+   Status = Lost.
+
+---
+
+## COMPLIANCE NOTE
+Outbound emails include identification + opt-out ("reply unsubscribe").
+Keep under Apps Script free quota (~100 sends/day). Only email leads who
+opted in via the form (consent).
+
+## FILES
+- `google-apps-script.js` — full Code.gs (Phase 1 live + Phase 2/3 stubs).
+- `leads-template.csv` — 14-col header + 2 sample rows (now includes Priority).
+- Both sites' forms POST to the webhook (verified `{"result":"ok"}`).

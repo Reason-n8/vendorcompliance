@@ -1,3 +1,3 @@
-Timestamp,Name,Email,Company,Plan Interest,Vendor Count,Message,Source,Status,Lead Score,Last Contact,Follow-up Date,Notes
-2026-07-12 09:14,Sample Lead (VC),owner@acme-construction.com,Acme Construction,Starter,12,"Need COI tracking for 12 subs, currently in Excel.",VendorCompliance OS,New,70,,2026-07-15,"Inbound from site form. Mailto fallback used."
-2026-07-12 10:02,Sample Lead (RF),jane@brightsaas.io,Bright SaaS,Paid Report,$0,"Want full competitor comparison for our category.",RankFixer,Contacted,65,2026-07-12,,Sent teaser score, following up with report offer.
+Timestamp,Name,Email,Company,Plan Interest,Vendor Count,Message,Source,Status,Lead Score,Priority,Last Contact,Follow-up Date,Notes
+2026-07-12 09:14,Sample Lead (VC),owner@acme-construction.com,Acme Construction,Starter,12,"Need COI tracking for 12 subs, currently in Excel.",VendorCompliance OS,New,60,Medium,,2026-07-14,"Inbound from site form."
+2026-07-12 10:02,Sample Lead (RF),jane@brightsaas.io,Bright SaaS,Paid Report,$0,"Want full competitor comparison for our category.",RankFixer,Contacted,75,Medium,2026-07-12,,Sent teaser score, following up with report offer.
