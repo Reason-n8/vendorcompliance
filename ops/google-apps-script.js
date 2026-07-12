@@ -35,7 +35,7 @@
 
 // ---- CONFIG (edit these) ----
 var OWNER_EMAIL = "acibronjan@gmail.com"; // where digests + alerts go
-var REPLY_DETECTION = false; // set true only after Phase 2 (Make/Zapier) is wired
+var REPLY_DETECTION = true; // native checkReplies() handles reply detection (no Make needed)
 
 // ===========================================================================
 // doPost — called by the site forms. Appends a scored, prioritized lead row
@@ -440,4 +440,79 @@ function phase2HookPlaceholder() {
 // ===========================================================================
 function phase3HookPlaceholder() {
   // Intentionally empty. Phase 3 needs Stripe key in Script Properties.
+}
+
+// ===========================================================================
+// REPLY DETECTION (Phase 1, native — detection + notification, manual move)
+// ---------------------------------------------------------------------------
+// Daily time-driven scan: finds replies from prospects in the Prospects tab
+// and notifies YOU. You move them to Leads manually. No Make.com needed.
+//
+// Matching: primary = sender email matches a prospect Email; fallback =
+// sender email's domain contains the prospect Company name (handles replies
+// from a different/personal address). Only acts on Status = "Contacted"
+// (i.e. we already emailed them) to avoid false positives from strangers.
+// ===========================================================================
+function checkReplies() {
+  var sheet = getProspectsSheet();
+  if (!sheet) return;
+  var data = sheet.getDataRange().getValues();
+  var matched = [];
+
+  for (var i = 1; i < data.length; i++) {
+    var status = (data[i][6] || '').toString();
+    if (status !== 'Contacted') continue; // only prospects we've emailed
+
+    var email = (data[i][2] || '').toString().toLowerCase();
+    var company = (data[i][3] || '').toString().toLowerCase().trim();
+    if (!email && !company) continue;
+
+    // Search Gmail for a thread with this prospect (email preferred; company as fallback).
+    var key = email || company;
+    var threads;
+    try {
+      threads = GmailApp.search('(to:' + (email || company) + ') (from:' + (email || company) + ')', 0, 5);
+    } catch (e) {
+      continue;
+    }
+    if (!threads || threads.length === 0) continue;
+
+    // Confirm there's a message from the prospect (not just our own send).
+    var found = false;
+    for (var t = 0; t < threads.length && !found; t++) {
+      var msgs = threads[t].getMessages();
+      for (var m = 0; m < msgs.length; m++) {
+        var from = msgs[m].getFrom().toLowerCase();
+        var bodyLen = (msgs[m].getPlainBody() || '').length;
+        // A reply = a message authored by the prospect (their email/domain),
+        // and not one of our own outbound sends (those are short templated).
+        if ((email && from.indexOf(email) !== -1) ||
+            (company && from.indexOf(company.split(' ')[0]) !== -1 && bodyLen > 20)) {
+          found = true; break;
+        }
+      }
+    }
+    if (!found) continue;
+
+    // Mark Replied + record, and queue a notification.
+    sheet.getRange(i + 1, 7).setValue('Replied');          // Status col
+    sheet.getRange(i + 1, 10).setValue(new Date());         // Last Contact col
+    matched.push({
+      name: data[i][1] || '',
+      company: data[i][3] || '',
+      email: data[i][2] || '',
+      subject: threads[0].getFirstMessageSubject()
+    });
+  }
+
+  if (matched.length > 0) {
+    var lines = matched.map(function (x) {
+      return "• " + (x.name || x.company) + " (" + (x.email || 'no email') + ")" +
+             (x.company ? " — " + x.company : "") + "\n  Subject: " + x.subject;
+    }).join("\n\n");
+    MailApp.sendEmail(OWNER_EMAIL,
+      "💬 " + matched.length + " prospect reply" + (matched.length > 1 ? "ies" : "") + " — review & move to Leads",
+      "Prospect replies detected (status set to Replied):\n\n" + lines +
+      "\n\nMove them to the Leads tab when ready. They're already scored.");
+  }
 }
